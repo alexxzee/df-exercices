@@ -18,7 +18,7 @@ Dans le terminal du sous-dossier :
 |---|---|
 | `npm test` | lance les tests du dossier `test/` |
 | `npm run lint` | analyse statique (ESLint, règle de complexité) |
-| `npm run verifier-filet` | essaie quelques modifications du code d’origine et compte celles que vos tests détectent |
+| `npm run verifier-filet` | essaie quelques modifications du code d’origine et compte celles que vos tests détectent ; demande la clé que donne le formateur |
 | `npm run reprise -- <partie>` | pose l’état prêt d’une partie si vous avez pris du retard (une copie de votre travail est gardée dans `.sauvegardes/`) |
 
 ## Contenu

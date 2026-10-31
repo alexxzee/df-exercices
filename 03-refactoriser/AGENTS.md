@@ -12,7 +12,7 @@ Le module édite le bon de préparation que l’entrepôt imprime pour chaque co
 
 - `npm test` : lance les tests de `test/`.
 - `npm run lint` : ESLint, complexité maximale 10 par fonction.
-- `npm run verifier-filet` : mesure si les tests détectent de petites modifications du code.
+- `npm run verifier-filet` : mesure si les tests détectent de petites modifications du code. Il demande la clé du formateur : c’est l’utilisateur qui le lance, dans son terminal.
 
 ## Conventions
 

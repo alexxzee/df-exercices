@@ -2,8 +2,11 @@
 // Mesure la solidité des tests d'un exercice : on essaie quelques petites
 // modifications du code d'origine et on compte celles que les tests détectent.
 // Usage (depuis le sous-dossier de l'exercice) : npm run verifier-filet
+// La liste des modifications est chiffrée : la clé est donnée par le formateur
+// au moment de la mesure, et se saisit dans le terminal.
 'use strict';
 
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -17,7 +20,10 @@ if (!exercice) {
 
 const racine = path.join(__dirname, '..');
 const dossierExercice = path.join(racine, exercice);
-const { fichier, mutations } = require(path.join(__dirname, 'mutations', exercice + '.js'));
+// La liste reste chiffrée tant que la clé n'est pas saisie : un assistant qui lit
+// l'espace de travail n'y trouve pas les comportements que les tests doivent figer.
+const liste = JSON.parse(fs.readFileSync(path.join(__dirname, 'mutations', exercice + '.chiffre.json'), 'utf8'));
+const fichier = liste.fichier;
 const origine = fs.readFileSync(path.join(__dirname, 'origines', exercice, fichier), 'utf8');
 
 function fichiersDeTest(dossier) {
@@ -65,6 +71,69 @@ function pluriel(n, mot) {
   return n + ' ' + mot + (n > 1 ? 's' : '');
 }
 
+// Saisie masquée : rien ne s'affiche pendant la frappe.
+function saisirMasque(question) {
+  return new Promise((resolve) => {
+    const entree = process.stdin;
+    process.stdout.write(question);
+    entree.setRawMode(true);
+    entree.setEncoding('utf8');
+    entree.resume();
+    let tape = '';
+    const lire = (morceau) => {
+      for (const car of morceau) {
+        if (car === '\r' || car === '\n') {
+          entree.setRawMode(false);
+          entree.pause();
+          entree.removeListener('data', lire);
+          process.stdout.write('\n');
+          resolve(tape);
+          return;
+        }
+        if (car === '\u0003') {
+          entree.setRawMode(false);
+          process.stdout.write('\n');
+          process.exit(130);
+        }
+        if (car === '\u007f' || car === '\b') tape = tape.slice(0, -1);
+        else tape += car;
+      }
+    };
+    entree.on('data', lire);
+  });
+}
+
+async function demanderCle() {
+  // Variable d'environnement : pour les tests automatisés du formateur.
+  if (process.env.FILET_CLE) return process.env.FILET_CLE;
+  if (!process.stdin.isTTY) {
+    console.log(
+      'Clé du formateur nécessaire : lancez npm run verifier-filet vous-même, dans le terminal, ' +
+        'et saisissez la clé que donne le formateur.',
+    );
+    process.exit(1);
+  }
+  return saisirMasque('Clé du formateur (rien ne s’affiche pendant la frappe), puis Entrée : ');
+}
+
+function dechiffrer(cleSaisie) {
+  const { N, r, p } = liste.derivation;
+  const cle = crypto.scryptSync(cleSaisie.trim().toLowerCase(), Buffer.from(liste.sel, 'base64'), 32, {
+    N,
+    r,
+    p,
+    maxmem: 64 * 1024 * 1024,
+  });
+  const dechiffreur = crypto.createDecipheriv('aes-256-gcm', cle, Buffer.from(liste.iv, 'base64'));
+  dechiffreur.setAuthTag(Buffer.from(liste.etiquette, 'base64'));
+  try {
+    const clair = Buffer.concat([dechiffreur.update(Buffer.from(liste.donnees, 'base64')), dechiffreur.final()]);
+    return JSON.parse(clair.toString('utf8'));
+  } catch {
+    return null;
+  }
+}
+
 if (fichiersDeTest(path.join(dossierExercice, 'test')).length === 0) {
   console.log('Aucun test trouvé dans test/.');
   process.exit(0);
@@ -92,6 +161,16 @@ async function mesurer() {
           'Un test de caractérisation décrit ce que fait le code d’origine : s’il est rouge sur ce code, ' +
           'soit il est faux, soit il a été modifié pour suivre un changement de comportement (git diff -- test/ le montre).',
       );
+      return;
+    }
+
+    const mutations = dechiffrer(await demanderCle());
+    if (!mutations) {
+      console.log(
+        'Clé incorrecte : la liste des modifications ne s’ouvre pas. ' +
+          'Vérifiez la clé donnée par le formateur, puis relancez npm run verifier-filet.',
+      );
+      process.exitCode = 1;
       return;
     }
 
