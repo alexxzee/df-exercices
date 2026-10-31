@@ -89,7 +89,8 @@ async function mesurer() {
     if (!reference.vert || reference.reussis === 0) {
       console.log(
         'Filet : ' + pluriel(reference.echoues, 'test') + ' au rouge sur le code d’origine. ' +
-          'Un test de caractérisation décrit ce que le code fait aujourd’hui : rendez-le vert avant de mesurer le filet.',
+          'Un test de caractérisation décrit ce que fait le code d’origine : s’il est rouge sur ce code, ' +
+          'soit il est faux, soit il a été modifié pour suivre un changement de comportement (git diff -- test/ le montre).',
       );
       return;
     }
