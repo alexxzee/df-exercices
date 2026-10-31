@@ -7,7 +7,7 @@
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { spawnSync } = require('node:child_process');
+const { Worker } = require('node:worker_threads');
 
 const exercice = process.argv[2];
 if (!exercice) {
@@ -27,17 +27,38 @@ function fichiersDeTest(dossier) {
     .filter((nom) => nom.endsWith('.js'));
 }
 
+// Les tests tournent dans un fil d'exécution du même processus, sans lancer un
+// second programme : le bac à sable de certains assistants l'interdit (Codex sous
+// Linux répond EPERM), et ils doivent pouvoir mesurer le filet eux aussi.
+const LANCEUR = `
+const { parentPort, workerData } = require('node:worker_threads');
+const { run } = require('node:test');
+let reussis = 0;
+let echoues = 0;
+const flux = run({ files: workerData.fichiers, cwd: workerData.dossier, isolation: 'none' });
+flux.on('test:pass', (e) => { if (e.details.type !== 'suite') reussis++; });
+flux.on('test:fail', (e) => { if (e.details.type !== 'suite') echoues++; });
+flux.on('end', () => parentPort.postMessage({ reussis, echoues }));
+flux.resume();
+`;
+
 function lancerTests(dossier) {
-  const resultat = spawnSync(
-    process.execPath,
-    ['--test', '--test-reporter=tap', 'test/**/*.js'],
-    { cwd: dossier, encoding: 'utf8', timeout: 60000 },
-  );
-  const lire = (nom) => {
-    const trouve = (resultat.stdout || '').match(new RegExp('^# ' + nom + ' (\\d+)$', 'm'));
-    return trouve ? Number(trouve[1]) : 0;
-  };
-  return { vert: resultat.status === 0, reussis: lire('pass'), echoues: lire('fail') };
+  const fichiers = fichiersDeTest(path.join(dossier, 'test')).map((nom) => path.join(dossier, 'test', nom));
+  return new Promise((resolve) => {
+    const fil = new Worker(LANCEUR, { eval: true, workerData: { dossier, fichiers }, stdout: true, stderr: true });
+    fil.stdout.resume();
+    fil.stderr.resume();
+    // Une modification qui fait tourner le code en boucle compte comme détectée.
+    const delai = setTimeout(() => fil.terminate(), 60000);
+    let resultat = { vert: false, reussis: 0, echoues: 0 };
+    fil.once('message', ({ reussis, echoues }) => {
+      resultat = { vert: echoues === 0, reussis, echoues };
+    });
+    fil.once('exit', () => {
+      clearTimeout(delai);
+      resolve(resultat);
+    });
+  });
 }
 
 function pluriel(n, mot) {
@@ -49,44 +70,52 @@ if (fichiersDeTest(path.join(dossierExercice, 'test')).length === 0) {
   process.exit(0);
 }
 
-// Copie de travail : votre dossier n'est jamais modifié.
-const copie = fs.mkdtempSync(path.join(os.tmpdir(), 'verifier-filet-'));
-try {
-  fs.cpSync(dossierExercice, copie, {
-    recursive: true,
-    filter: (source) => !/[\\/](node_modules|\.git)([\\/]|$)/.test(path.relative(racine, source)),
-  });
-  const cible = path.join(copie, fichier);
-  fs.writeFileSync(cible, origine);
-
-  const reference = lancerTests(copie);
-  if (!reference.vert || reference.reussis === 0) {
-    console.log(
-      'Filet : ' + pluriel(reference.echoues, 'test') + ' au rouge sur le code d’origine. ' +
-        'Un test de caractérisation décrit ce que le code fait aujourd’hui : rendez-le vert avant de mesurer le filet.',
-    );
-    process.exit(0);
-  }
-
-  const manquees = [];
-  for (const mutation of mutations) {
-    const morceaux = origine.split(mutation.chercher);
-    if (morceaux.length !== 2) {
-      throw new Error('Modification inapplicable (texte introuvable ou en double) : ' + mutation.comportement);
-    }
-    fs.writeFileSync(cible, morceaux.join(mutation.remplacer));
-    if (lancerTests(copie).vert) manquees.push(mutation);
+async function mesurer() {
+  // Copie de travail : votre dossier n'est jamais modifié.
+  const copie = fs.mkdtempSync(path.join(os.tmpdir(), 'verifier-filet-'));
+  try {
+    fs.cpSync(dossierExercice, copie, {
+      recursive: true,
+      filter: (source) => !/[\\/](node_modules|\.git)([\\/]|$)/.test(path.relative(racine, source)),
+    });
+    const cible = path.join(copie, fichier);
     fs.writeFileSync(cible, origine);
-  }
 
-  const detectees = mutations.length - manquees.length;
-  console.log(
-    'Filet : ' + pluriel(reference.reussis, 'test') + ' au vert sur le code d’origine ; ' +
-      (reference.reussis > 1 ? 'ils détectent ' : 'il détecte ') + detectees + ' des ' + mutations.length + ' modifications essayées.',
-  );
-  for (const mutation of manquees) {
-    console.log('- Non détectée : aucun test ne passe au rouge quand on modifie ' + mutation.comportement + '.');
+    const reference = await lancerTests(copie);
+    if (reference.reussis === 0 && reference.echoues === 0) {
+      console.log('Les tests n’ont pas pu tourner : lancez npm test pour voir l’erreur.');
+      return;
+    }
+    if (!reference.vert || reference.reussis === 0) {
+      console.log(
+        'Filet : ' + pluriel(reference.echoues, 'test') + ' au rouge sur le code d’origine. ' +
+          'Un test de caractérisation décrit ce que le code fait aujourd’hui : rendez-le vert avant de mesurer le filet.',
+      );
+      return;
+    }
+
+    const manquees = [];
+    for (const mutation of mutations) {
+      const morceaux = origine.split(mutation.chercher);
+      if (morceaux.length !== 2) {
+        throw new Error('Modification inapplicable (texte introuvable ou en double) : ' + mutation.comportement);
+      }
+      fs.writeFileSync(cible, morceaux.join(mutation.remplacer));
+      if ((await lancerTests(copie)).vert) manquees.push(mutation);
+      fs.writeFileSync(cible, origine);
+    }
+
+    const detectees = mutations.length - manquees.length;
+    console.log(
+      'Filet : ' + pluriel(reference.reussis, 'test') + ' au vert sur le code d’origine ; ' +
+        (reference.reussis > 1 ? 'ils détectent ' : 'il détecte ') + detectees + ' des ' + mutations.length + ' modifications essayées.',
+    );
+    for (const mutation of manquees) {
+      console.log('- Non détectée : aucun test ne passe au rouge quand on modifie ' + mutation.comportement + '.');
+    }
+  } finally {
+    fs.rmSync(copie, { recursive: true, force: true });
   }
-} finally {
-  fs.rmSync(copie, { recursive: true, force: true });
 }
+
+mesurer();

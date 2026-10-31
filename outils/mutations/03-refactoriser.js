@@ -54,5 +54,15 @@ module.exports = {
       chercher: 'if (stock == undefined) {',
       remplacer: 'if (stock == undefined || stock == 0) {',
     },
+    {
+      comportement: 'le statut d’un article dont le stock égale exactement la quantité',
+      chercher: 'if (stock >= l.quantite) {',
+      remplacer: 'if (stock > l.quantite) {',
+    },
+    {
+      comportement: 'l’ordre des mentions d’un article à la fois fragile et lourd',
+      chercher: "mentions = mentions + ' [2 PERS.]';",
+      remplacer: "mentions = ' [2 PERS.]' + mentions;",
+    },
   ],
 };
