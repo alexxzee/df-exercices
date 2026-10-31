@@ -9,7 +9,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
-const DEPOT_CORRIGES = 'https://github.com/alexxzee/df-exercices-corriges.git';
+const DEPOT_CORRIGES = 'https://github.com/alexxzee/df-exercices-reprises.git';
 const PARTIES = {
   '03-refactoriser': ['3', '4', '5'],
 };
