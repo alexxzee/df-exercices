@@ -4,7 +4,7 @@ Exercices de la formation « Développeurs : boostez vos performances grâce à 
 
 ## Installer
 
-1. Cloner le dépôt : `git clone https://github.com/alexxzee/df-exercices.git`
+1. Cloner le dépôt : `git clone --depth 1 https://github.com/alexxzee/df-exercices.git` (`--depth 1` : le dernier état seul, sans l’historique de préparation des exercices)
 2. Entrer dans le dossier : `cd df-exercices`
 3. Installer l’outillage, une seule fois, à la racine : `npm install`
 

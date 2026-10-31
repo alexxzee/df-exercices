@@ -36,13 +36,14 @@ function git(args) {
 
 const racineGit = git(['rev-parse', '--show-toplevel']);
 if (racineGit.status !== 0) {
-  arreter('Ce dossier n’est pas dans un clone git de df-exercices : clonez le dépôt avec git clone (voir le README).');
+  arreter('Ce dossier n’est pas dans un clone git de df-exercices : clonez le dépôt avec git clone --depth 1 (voir le README).');
 }
 const racine = racineGit.stdout.trim();
 
 const branche = exercice.slice(0, 2) + '/partie-' + partie;
 console.log('Récupération de la partie ' + partie + ' (' + branche + ')…');
-const recuperation = git(['fetch', '--quiet', DEPOT_CORRIGES, branche]);
+// --depth 1 : seul l'état de la partie est récupéré, sans l'historique du dépôt des reprises.
+const recuperation = git(['fetch', '--quiet', '--depth', '1', '--no-tags', DEPOT_CORRIGES, branche]);
 if (recuperation.status !== 0) {
   arreter('Récupération impossible. Vérifiez la connexion à GitHub, puis relancez.\n' + recuperation.stderr.trim());
 }
