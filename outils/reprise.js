@@ -1,0 +1,76 @@
+// Fichier de la formation : ne pas modifier.
+// Pose l'état prêt d'une partie d'exercice, pour rattraper un retard.
+// Usage (depuis le sous-dossier de l'exercice) : npm run reprise -- <partie>
+// Votre travail actuel est d'abord copié dans .sauvegardes/ à la racine du dépôt.
+// L'historique git n'est pas modifié : aucun commit, aucune branche.
+'use strict';
+
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
+
+const DEPOT_CORRIGES = 'https://github.com/alexxzee/df-exercices-corriges.git';
+const PARTIES = {
+  '03-refactoriser': ['3', '4', '5'],
+};
+
+const exercice = process.argv[2];
+const partie = process.argv[3];
+const parties = PARTIES[exercice];
+
+function arreter(message) {
+  console.error(message);
+  process.exit(1);
+}
+
+if (!parties) arreter('Exercice inconnu : ' + exercice);
+if (!parties.includes(partie)) {
+  arreter('Indiquez la partie à poser : npm run reprise -- <partie>, avec <partie> parmi ' + parties.join(', ') + '.');
+}
+
+const dossierExercice = path.join(__dirname, '..', exercice);
+
+function git(args) {
+  return spawnSync('git', args, { cwd: dossierExercice, encoding: 'utf8' });
+}
+
+const racineGit = git(['rev-parse', '--show-toplevel']);
+if (racineGit.status !== 0) {
+  arreter('Ce dossier n’est pas dans un clone git de df-exercices : clonez le dépôt avec git clone (voir le README).');
+}
+const racine = racineGit.stdout.trim();
+
+const branche = exercice.slice(0, 2) + '/partie-' + partie;
+console.log('Récupération de la partie ' + partie + ' (' + branche + ')…');
+const recuperation = git(['fetch', '--quiet', DEPOT_CORRIGES, branche]);
+if (recuperation.status !== 0) {
+  arreter('Récupération impossible. Vérifiez la connexion à GitHub, puis relancez.\n' + recuperation.stderr.trim());
+}
+if (git(['cat-file', '-e', 'FETCH_HEAD:' + exercice]).status !== 0) {
+  arreter('La partie ' + partie + ' ne contient pas le dossier ' + exercice + '. Prévenez le formateur.');
+}
+
+// 1. Copie de sauvegarde du travail actuel (sans node_modules).
+const horodatage = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+const sauvegarde = path.join(racine, '.sauvegardes', exercice + '-' + horodatage);
+fs.cpSync(dossierExercice, sauvegarde, {
+  recursive: true,
+  filter: (source) => !/[\\/]node_modules([\\/]|$)/.test(source),
+});
+
+// 2. On vide le dossier de l'exercice (le dossier lui-même reste, il est ouvert dans l'éditeur).
+for (const nom of fs.readdirSync(dossierExercice)) {
+  if (nom === 'node_modules') continue;
+  fs.rmSync(path.join(dossierExercice, nom), { recursive: true, force: true });
+}
+
+// 3. On pose les fichiers de la partie, sans toucher à l'historique.
+const pose = git(['checkout', 'FETCH_HEAD', '--', '.']);
+if (pose.status !== 0) {
+  arreter('Pose impossible : ' + pose.stderr.trim() + '\nVotre travail est intact dans ' + sauvegarde);
+}
+git(['reset', '--quiet', '--', '.']);
+
+console.log('Partie ' + partie + ' posée dans ' + exercice + '/.');
+console.log('Votre travail précédent est copié dans ' + path.relative(racine, sauvegarde) + '/.');
+console.log('Vérifiez : npm test');

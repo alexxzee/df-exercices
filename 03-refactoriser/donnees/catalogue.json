@@ -1,0 +1,17 @@
+[
+  { "ref": "REF-1042", "libelle": "Disjoncteur 16A courbe C", "allee": "A", "emplacement": "03", "poids": 0.2, "fragile": false },
+  { "ref": "REF-1043", "libelle": "Interrupteur différentiel 40A 30mA type AC", "allee": "A", "emplacement": "04", "poids": 0.4, "fragile": false },
+  { "ref": "REF-1050", "libelle": "Interrupteur va-et-vient", "allee": "A", "emplacement": "07", "poids": 0.1, "fragile": false },
+  { "ref": "REF-2210", "libelle": "Gaine ICTA 20 mm (100 m)", "allee": "B", "emplacement": "11", "poids": 4.5, "fragile": false },
+  { "ref": "REF-2215", "libelle": "Gaine ICTA 25 mm (50 m)", "allee": "B", "emplacement": "12", "poids": 3.2, "fragile": false },
+  { "ref": "REF-2301", "libelle": "Boîte d'encastrement placo", "allee": "B", "emplacement": "02", "poids": 0.05, "fragile": false },
+  { "ref": "REF-3307", "libelle": "Plaque de plâtre BA13 2,60 m", "allee": "C", "emplacement": "02", "poids": 27, "fragile": false },
+  { "ref": "REF-3310", "libelle": "Rail métallique R48 3 m", "allee": "C", "emplacement": "05", "poids": 2.1, "fragile": false },
+  { "ref": "REF-3315", "libelle": "Montant métallique M48 3 m", "allee": "C", "emplacement": "06", "poids": 2.6, "fragile": false },
+  { "ref": "REF-4120", "libelle": "Colle carrelage C2 sac 25 kg", "allee": "D", "emplacement": "01", "poids": 25, "fragile": false },
+  { "ref": "REF-4210", "libelle": "Mastic acrylique 310 ml", "allee": "D", "emplacement": "08", "poids": 0.4, "fragile": false },
+  { "ref": "REF-5005", "libelle": "Chevilles à expansion 8 mm (boîte de 100)", "allee": "E", "emplacement": "03", "poids": 0.6, "fragile": false },
+  { "ref": "REF-5010", "libelle": "Vis placo 3,5x25 boîte 1000", "allee": "E", "emplacement": "04", "poids": 1.2, "fragile": false },
+  { "ref": "REF-6010", "libelle": "Faïence murale 20x20 (1 m²)", "allee": "F", "emplacement": "02", "poids": 14, "fragile": true },
+  { "ref": "REF-6020", "libelle": "Vasque céramique 50 cm", "allee": "", "emplacement": "", "poids": 12, "fragile": true }
+]

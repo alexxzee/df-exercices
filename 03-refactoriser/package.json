@@ -1,0 +1,16 @@
+{
+  "name": "df-exercices-03-refactoriser",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bon de préparation de l'entrepôt Delmas & Fournier",
+  "main": "src/bon-preparation.js",
+  "scripts": {
+    "test": "node --test \"test/**/*.js\"",
+    "lint": "eslint src",
+    "verifier-filet": "node ../outils/verifier-filet.js 03-refactoriser",
+    "reprise": "node ../outils/reprise.js 03-refactoriser"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
