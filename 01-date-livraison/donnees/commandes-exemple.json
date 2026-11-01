@@ -1,0 +1,28 @@
+[
+  {
+    "numero": "CMD-2026-0412",
+    "client": "Menuiserie Arnaud",
+    "valideeLe": "2026-10-14T09:40",
+    "lignes": [
+      { "reference": "VIS-INOX-4X40", "libelle": "Vis inox 4 x 40 (boîte de 200)", "quantite": 6, "surCommande": false },
+      { "reference": "CHE-BOIS-8", "libelle": "Chevilles bois 8 mm (sachet de 100)", "quantite": 2, "surCommande": false }
+    ]
+  },
+  {
+    "numero": "CMD-2026-0413",
+    "client": "Atelier Lemoine",
+    "valideeLe": "2026-10-16T17:05",
+    "lignes": [
+      { "reference": "PAN-CTP-18", "libelle": "Panneau contreplaqué 18 mm", "quantite": 4, "surCommande": false }
+    ]
+  },
+  {
+    "numero": "CMD-2026-0414",
+    "client": "SARL Bati Est",
+    "valideeLe": "2026-10-19T11:15",
+    "lignes": [
+      { "reference": "POR-CHENE-83", "libelle": "Porte chêne massif 83 cm", "quantite": 1, "surCommande": true },
+      { "reference": "PAU-LAITON", "libelle": "Paumelles laiton (lot de 3)", "quantite": 2, "surCommande": false }
+    ]
+  }
+]

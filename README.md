@@ -10,13 +10,14 @@ Exercices de la formation « Développeurs : boostez vos performances grâce à 
 
 ## Travailler un exercice
 
-Ouvrez **le sous-dossier de l’exercice**, jamais la racine : dans VS Code, `Fichier`, `Ouvrir le dossier…`, puis `df-exercices/03-refactoriser`. L’assistant lit alors le contexte et les outils propres à cet exercice.
+Ouvrez **le sous-dossier de l’exercice**, jamais la racine : dans VS Code, `Fichier`, `Ouvrir le dossier…`, puis le sous-dossier de l’exercice, par exemple `df-exercices/01-date-livraison`. L’assistant lit alors le contexte et les outils propres à cet exercice.
 
-Dans le terminal du sous-dossier :
+Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’exercice) :
 
 | Commande | Effet |
 |---|---|
 | `npm test` | lance les tests du dossier `test/` |
+| `npm run verifier` | lance votre fonction sur des situations écrites par la formation et compte celles qui donnent le bon résultat ; demande la clé que donne le formateur |
 | `npm run lint` | analyse statique (ESLint, règle de complexité) |
 | `npm run verifier-filet` | essaie quelques modifications du code d’origine et compte celles que vos tests détectent ; demande la clé que donne le formateur |
 | `npm run reprise -- <partie>` | pose l’état prêt d’une partie si vous avez pris du retard (une copie de votre travail est gardée dans `.sauvegardes/`) |
@@ -25,5 +26,6 @@ Dans le terminal du sous-dossier :
 
 | Dossier | Exercice |
 |---|---|
+| `01-date-livraison/` | écrire la date de livraison prévue, du ticket au test, puis les consignes de l’équipe |
 | `03-refactoriser/` | caractériser puis refactoriser le bon de préparation |
 | `outils/` | outillage partagé par les exercices : ne pas modifier |

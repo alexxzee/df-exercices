@@ -1,0 +1,14 @@
+{
+  "name": "df-exercices-01-date-livraison",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Récapitulatif de commande Delmas & Fournier",
+  "scripts": {
+    "test": "node --test --test-isolation=none \"test/**/*.js\"",
+    "verifier": "node ../outils/verifier-cas.js 01-date-livraison",
+    "reprise": "node ../outils/reprise.js 01-date-livraison"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

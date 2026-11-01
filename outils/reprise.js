@@ -11,6 +11,7 @@ const { spawnSync } = require('node:child_process');
 
 const DEPOT_CORRIGES = 'https://github.com/alexxzee/df-exercices-reprises.git';
 const PARTIES = {
+  '01-date-livraison': ['3', '5'],
   '03-refactoriser': ['3', '4', '5'],
 };
 
