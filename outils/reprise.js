@@ -3,6 +3,9 @@
 // Usage (depuis le sous-dossier de l'exercice) : npm run reprise -- <partie>
 // Votre travail actuel est d'abord copié dans .sauvegardes/ à la racine du dépôt.
 // L'historique git n'est pas modifié : aucun commit, aucune branche.
+// Un exercice qui porte son propre dépôt git (06-integrer, envoyé sur le compte
+// du participant) garde son dossier .git : les fichiers de la partie sont lus
+// dans le dépôt df-exercices et écrits sans passer par le dépôt de l'exercice.
 'use strict';
 
 const fs = require('node:fs');
@@ -16,6 +19,7 @@ const PARTIES = {
   '03-refactoriser': ['3', '4', '5'],
   '04-auditer': ['3', '5', '6'],
   '05-proteger': ['4', '7'],
+  '06-integrer': ['3', '5', '6'],
   '08-1-explorer': ['3'],
   '08-2-equipe': ['4'],
 };
@@ -36,8 +40,13 @@ if (!parties.includes(partie)) {
 
 const dossierExercice = path.join(__dirname, '..', exercice);
 
-function git(args) {
-  return spawnSync('git', args, { cwd: dossierExercice, encoding: 'utf8' });
+// Dépôt propre à l'exercice : git travaille depuis la racine de df-exercices,
+// jamais dans le dépôt de l'exercice.
+const depotInterieur = fs.existsSync(path.join(dossierExercice, '.git'));
+const dossierGit = depotInterieur ? path.join(__dirname, '..') : dossierExercice;
+
+function git(args, encodage = 'utf8') {
+  return spawnSync('git', args, { cwd: dossierGit, encoding: encodage, maxBuffer: 64 * 1024 * 1024 });
 }
 
 const racineGit = git(['rev-parse', '--show-toplevel']);
@@ -69,17 +78,40 @@ fs.cpSync(dossierExercice, sauvegarde, {
 // 2. On vide le dossier de l'exercice (le dossier lui-même reste, il est ouvert dans l'éditeur).
 for (const nom of fs.readdirSync(dossierExercice)) {
   // .env, ignoré par git, porte vos réglages locaux : il reste en place.
-  if (nom === 'node_modules' || nom === '.env') continue;
+  // .git, s'il existe, est le dépôt de l'exercice : il reste en place.
+  if (nom === 'node_modules' || nom === '.env' || nom === '.git') continue;
   fs.rmSync(path.join(dossierExercice, nom), { recursive: true, force: true });
 }
 
 // 3. On pose les fichiers de la partie, sans toucher à l'historique.
-const pose = git(['checkout', 'FETCH_HEAD', '--', '.']);
-if (pose.status !== 0) {
-  arreter('Pose impossible : ' + pose.stderr.trim() + '\nVotre travail est intact dans ' + sauvegarde);
+if (depotInterieur) {
+  const liste = git(['ls-tree', '-r', '-z', 'FETCH_HEAD', '--', exercice + '/']);
+  if (liste.status !== 0) {
+    arreter('Pose impossible : ' + liste.stderr.trim() + '\nVotre travail est intact dans ' + sauvegarde);
+  }
+  for (const entree of liste.stdout.split('\0').filter(Boolean)) {
+    const [entete, chemin] = entree.split('\t');
+    const [mode, type, objet] = entete.split(' ');
+    if (type !== 'blob') continue;
+    const contenu = git(['cat-file', 'blob', objet], 'buffer');
+    if (contenu.status !== 0) {
+      arreter('Pose impossible : ' + chemin + '\nVotre travail est intact dans ' + sauvegarde);
+    }
+    const cible = path.join(racine, chemin);
+    fs.mkdirSync(path.dirname(cible), { recursive: true });
+    fs.writeFileSync(cible, contenu.stdout, { mode: mode === '100755' ? 0o755 : 0o644 });
+  }
+} else {
+  const pose = git(['checkout', 'FETCH_HEAD', '--', '.']);
+  if (pose.status !== 0) {
+    arreter('Pose impossible : ' + pose.stderr.trim() + '\nVotre travail est intact dans ' + sauvegarde);
+  }
+  git(['reset', '--quiet', '--', '.']);
 }
-git(['reset', '--quiet', '--', '.']);
 
 console.log('Partie ' + partie + ' posée dans ' + exercice + '/.');
 console.log('Votre travail précédent est copié dans ' + path.relative(racine, sauvegarde) + '/.');
 console.log(exercice === '04-auditer' ? 'Vérifiez : git status --short' : 'Vérifiez : npm test');
+if (depotInterieur) {
+  console.log('Votre dépôt n’a pas bougé : vérifiez les fichiers posés (git status), puis commitez et envoyez vous-même.');
+}

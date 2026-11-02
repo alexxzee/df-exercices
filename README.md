@@ -28,6 +28,7 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `npm run verifier-explorer` | vérifie, sur trois lignes, l’endroit où la règle demandée est appliquée, la règle elle-même et le test qui la protège ; demande la clé écrite dans la fiche |
 | `npm run devis-du-jour` | essaie la page des devis du jour sur six cas et compte ceux qui sont justes ; demande la clé écrite dans la fiche |
 | `npm run verifier` (dans `08-2-equipe/`) | lance les quatre commandes de la section « Vérifier » de `docs/boite-a-outils.md` et dit lesquelles échouent |
+| `npm run recevoir` (dans `06-integrer/`) | pose dans le projet la modification d’un collègue, à relire comme une pull request |
 | `npm run reprise -- <partie>` | pose l’état prêt d’une partie si vous avez pris du retard (une copie de votre travail est gardée dans `.sauvegardes/`) |
 
 ## Contenu
@@ -40,6 +41,7 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `03-refactoriser/` | caractériser puis refactoriser le bon de préparation |
 | `04-auditer/` | construire un agent auditeur en lecture seule, le mesurer et le corriger, puis corriger une faille du script de synchronisation des tarifs (Python) |
 | `05-proteger/` | fouiller une copie exposée, anonymiser un ticket avant de le confier, brancher un hook qui refuse à l’agent la lecture des secrets |
+| `06-integrer/` | envoyer le projet dans votre dépôt GitHub, faire écrire un pipeline CI qui bloque un secret, faire relire chaque pull request par votre agent de revue, puis décider ; ce sous-dossier porte son propre dépôt git et ses propres dépendances : `npm install` se lance aussi dans `06-integrer/` |
 | `08-1-explorer/` | faire chercher un agent explorateur en lecture seule avant de modifier, dans un dépôt d’une soixantaine de fichiers |
 | `08-2-equipe/` | confier une page à une équipe d’agents, la juger par une commande, lire ce que chacun a reçu, mesurer ce que coûte une commande lancée par un modèle |
 | `outils/` | outillage partagé par les exercices : ne pas modifier |

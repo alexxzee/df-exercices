@@ -1,0 +1,22 @@
+{
+  "name": "df-exercices-06-integrer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remises des devis Delmas & Fournier",
+  "main": "src/devis/remises.js",
+  "scripts": {
+    "test": "node --test --test-isolation=none \"test/**/*.js\"",
+    "lint": "eslint .",
+    "recevoir": "node ../outils/collegue-06/recevoir.js",
+    "reprise": "node ../outils/reprise.js 06-integrer"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "eslint": "^10.14.0"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
+  }
+}
