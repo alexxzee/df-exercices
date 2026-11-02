@@ -1,0 +1,16 @@
+{
+  "name": "df-exercices-02-1-tests-depuis-la-spec",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calcul des devis Delmas & Fournier",
+  "main": "src/devis/calcul.js",
+  "scripts": {
+    "test": "node --test --test-isolation=none \"test/**/*.js\"",
+    "test:couverture": "node --test --test-isolation=none --experimental-test-coverage \"test/**/*.js\"",
+    "verifier-tests": "node ../outils/verifier-tests.js 02-1-tests-depuis-la-spec",
+    "reprise": "node ../outils/reprise.js 02-1-tests-depuis-la-spec"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

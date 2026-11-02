@@ -12,6 +12,7 @@ const { spawnSync } = require('node:child_process');
 const DEPOT_CORRIGES = 'https://github.com/alexxzee/df-exercices-reprises.git';
 const PARTIES = {
   '01-date-livraison': ['3', '5'],
+  '02-1-tests-depuis-la-spec': ['4', '5', '7'],
   '03-refactoriser': ['3', '4', '5'],
 };
 
@@ -41,7 +42,8 @@ if (racineGit.status !== 0) {
 }
 const racine = racineGit.stdout.trim();
 
-const branche = exercice.slice(0, 2) + '/partie-' + partie;
+// Préfixe numérique du dossier : 01-date-livraison donne 01, 02-1-tests-depuis-la-spec donne 02-1.
+const branche = exercice.match(/^\d+(-\d+)?(?=-)/)[0] + '/partie-' + partie;
 console.log('Récupération de la partie ' + partie + ' (' + branche + ')…');
 // --depth 1 : seul l'état de la partie est récupéré, sans l'historique du dépôt des reprises.
 const recuperation = git(['fetch', '--quiet', '--depth', '1', '--no-tags', DEPOT_CORRIGES, branche]);
