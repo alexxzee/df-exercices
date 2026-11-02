@@ -13,7 +13,6 @@ Lance la commande de tests écrite dans `AGENTS.md`. Si aucun test ne tourne, ou
 1. Une seule extraction à la fois (une fonction sortie d’une autre), jamais deux.
 2. Après chaque extraction, relance les tests et montre le résultat.
 3. Si un test passe au rouge, annule l’extraction et dis pourquoi.
-4. Après chaque étape au vert, propose un message de commit en Conventional Commits français, par exemple `refactor(bon): extraire le formatage de la date`.
 
 # Règles
 - Toute différence de sortie, même un espace, est une régression.
