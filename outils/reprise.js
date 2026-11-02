@@ -22,6 +22,7 @@ const PARTIES = {
   '06-integrer': ['3', '5', '6'],
   '08-1-explorer': ['3'],
   '08-2-equipe': ['4'],
+  intersession: ['2'],
 };
 
 const exercice = process.argv[2];
@@ -56,7 +57,9 @@ if (racineGit.status !== 0) {
 const racine = racineGit.stdout.trim();
 
 // Préfixe numérique du dossier : 01-date-livraison donne 01, 02-1-tests-depuis-la-spec donne 02-1.
-const branche = exercice.match(/^\d+(-\d+)?(?=-)/)[0] + '/partie-' + partie;
+// Un dossier sans numéro (intersession) garde son nom entier.
+const prefixe = (exercice.match(/^\d+(-\d+)?(?=-)/) || [exercice])[0];
+const branche = prefixe + '/partie-' + partie;
 console.log('Récupération de la partie ' + partie + ' (' + branche + ')…');
 // --depth 1 : seul l'état de la partie est récupéré, sans l'historique du dépôt des reprises.
 const recuperation = git(['fetch', '--quiet', '--depth', '1', '--no-tags', DEPOT_CORRIGES, branche]);

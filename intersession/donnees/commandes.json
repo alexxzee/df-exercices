@@ -1,0 +1,94 @@
+[
+  {
+    "numero": "2026-0520",
+    "client": "Électricité Morel",
+    "pays": "FR",
+    "codePostal": "31770",
+    "mode": "standard",
+    "grandCompte": false,
+    "lignes": [
+      { "ref": "REF-1050", "quantite": 12, "poidsKg": 0.25, "prixHT": 4.8 },
+      { "ref": "REF-1042", "quantite": 6, "poidsKg": 0.4, "prixHT": 7.5 }
+    ]
+  },
+  {
+    "numero": "2026-0521",
+    "client": "SARL Plaquiste du Lauragais",
+    "pays": "FR",
+    "codePostal": "11400",
+    "mode": "standard",
+    "grandCompte": false,
+    "lignes": [
+      { "ref": "REF-3307", "quantite": 20, "poidsKg": 1.2, "prixHT": 9.9 },
+      { "ref": "REF-5010", "quantite": 2, "poidsKg": 3.5, "prixHT": 42 }
+    ]
+  },
+  {
+    "numero": "2026-0522",
+    "client": "Bâti Sud Rénovation",
+    "pays": "FR",
+    "codePostal": "31000",
+    "mode": "express",
+    "grandCompte": true,
+    "lignes": [
+      { "ref": "REF-2215", "quantite": 4, "poidsKg": 2.1, "prixHT": 89 },
+      { "ref": "REF-1042", "quantite": 10, "poidsKg": 0.4, "prixHT": 7.5 }
+    ]
+  },
+  {
+    "numero": "2026-0523",
+    "client": "Menuiserie Casanova",
+    "pays": "FR",
+    "codePostal": "20200",
+    "mode": "standard",
+    "grandCompte": false,
+    "lignes": [
+      { "ref": "REF-4410", "quantite": 3, "poidsKg": 6.5, "prixHT": 38 }
+    ]
+  },
+  {
+    "numero": "2026-0524",
+    "client": "Dubois Construction",
+    "pays": "BE",
+    "codePostal": "4000",
+    "mode": "express",
+    "grandCompte": false,
+    "lignes": [
+      { "ref": "REF-3315", "quantite": 12, "poidsKg": 2.6, "prixHT": 14.2 }
+    ]
+  },
+  {
+    "numero": "2026-0525",
+    "client": "Isolation Weber",
+    "pays": "LU",
+    "codePostal": "1611",
+    "mode": "standard",
+    "grandCompte": false,
+    "lignes": [
+      { "ref": "REF-6020", "quantite": 40, "poidsKg": 4.5, "prixHT": 18.5 }
+    ]
+  },
+  {
+    "numero": "2026-0526",
+    "client": "Chantiers Garonne",
+    "pays": "FR",
+    "codePostal": "33130",
+    "mode": "standard",
+    "grandCompte": true,
+    "lignes": [
+      { "ref": "REF-6020", "quantite": 30, "poidsKg": 4.5, "prixHT": 18.5 },
+      { "ref": "REF-3307", "quantite": 15, "poidsKg": 1.2, "prixHT": 9.9 }
+    ]
+  },
+  {
+    "numero": "2026-0527",
+    "client": "Atelier Fabre",
+    "pays": "FR",
+    "codePostal": "81100",
+    "mode": "retrait",
+    "grandCompte": false,
+    "lignes": [
+      { "ref": "REF-5010", "quantite": 1, "poidsKg": 3.5, "prixHT": 42 }
+    ]
+  }
+]

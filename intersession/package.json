@@ -1,0 +1,16 @@
+{
+  "name": "df-exercices-intersession",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frais de port des commandes Delmas & Fournier",
+  "main": "src/frais-port.js",
+  "scripts": {
+    "test": "node --test --test-isolation=none \"test/**/*.js\"",
+    "lint": "eslint src",
+    "verifier-filet": "node ../outils/verifier-filet.js intersession",
+    "reprise": "node ../outils/reprise.js intersession"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

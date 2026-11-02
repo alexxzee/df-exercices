@@ -44,4 +44,5 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `06-integrer/` | envoyer le projet dans votre dépôt GitHub, faire écrire un pipeline CI qui bloque un secret, faire relire chaque pull request par votre agent de revue, puis décider ; ce sous-dossier porte son propre dépôt git et ses propres dépendances : `npm install` se lance aussi dans `06-integrer/` |
 | `08-1-explorer/` | faire chercher un agent explorateur en lecture seule avant de modifier, dans un dépôt d’une soixantaine de fichiers |
 | `08-2-equipe/` | confier une page à une équipe d’agents, la juger par une commande, lire ce que chacun a reçu, mesurer ce que coûte une commande lancée par un modèle |
+| `intersession/` | travail du soir du premier jour : figer les frais de port avec le skill, les découper avec l’agent refacto, lister les écarts avec la règle dans `QUESTIONS.md` |
 | `outils/` | outillage partagé par les exercices : ne pas modifier |

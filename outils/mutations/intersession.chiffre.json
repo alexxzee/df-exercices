@@ -1,0 +1,15 @@
+{
+  "avertissement": "Fichier de la formation : ne pas modifier. Liste chiffrée des modifications essayées par npm run verifier-filet ; la clé est donnée par le formateur.",
+  "fichier": "src/frais-port.js",
+  "algorithme": "aes-256-gcm",
+  "derivation": {
+    "nom": "scrypt",
+    "N": 32768,
+    "r": 8,
+    "p": 1
+  },
+  "sel": "BCGsIpQ9D8WwS/ShAvA0gg==",
+  "iv": "u+FAk8a3YKSLk2gi",
+  "etiquette": "KgFZBPvVcfn+S6XtF5vhPw==",
+  "donnees": "bmdUcRErq2gXQ2t7TueL6atBpcFpRyApA59RLLBy0TKZoQH+imlaTZ0TXfDgY4w1nDeJIbWTzwg2zq/LlMNT1OHKvx7FGcwI/lmARXLMSnfyYMDdDAEOW4M9cQqWDSBusTVyQPPiIm3Vur6NYSoD1m3gN9WzZC1H3Io5PWpCWaIlg+oIikago3wgnOVeGXMUBE50/WIwoRL/ZvW1z7/8fNf07bTZXsjbu9LiFZblwvp9XvjLfrmHfjnqRQxuBkFDi25abdwOKWv3zjWBhJntOQFNNKyBBkqE39SDXyGZgoOfwryI8j3xMRZiTVj4qEiWbkUEeVnx2Am6T/mb4kUtO4MGVXCNggo6SmHuJLd0Amk9iOeHD0CalfIf3BQXP7No7cTCE/Lhk8Az0ErZA9s4Mi4U+i6MZCH05XDmqd4J26C47X0UO522aE8WSM3HS09pmgPPPpd8nA+L+8/NgukJM/jigKs+y84z09IwiQ3frVHMawq6MOiu9nXQRSIGxigMQIg+wmBNeXO3ZVS5eZd17M7Xv2TRgK6UQHoXYlAMbTUejfbZuB0qSKOj5LJOa47A3iH+VIT+/M0+V0XIRsBHFft+gnOFWLaom2bFXwUChEAkR3I6aSHDZuI18TglM6SEtbgV43Z6YhFuAeO9c6A5EDpeNFLkNyoIbqgUdBVzRW5osDuhBF/W87ddlNn0MFXJMOf9qLxv7IzBMjrhQJ0gK3WcQhLGi4kOpEv7Nn9RmuPow9vH8n3+O0K0VtNyS6lKAE4jhB7T65kczcj12TO1BL1KT4OlvGHzbXRLxAyzC8oC1SnPqOPXGsU/Vy6hDyjsSr2fbu5OegZL6we9ToyFBjYHYoYaqAeSpKrreFjgVH6FkOgAQDWEAbaD8aFel6PLVSL6gq6i82KWBephtXW7eE0Mtj5W4JhbYRzaNE7xr3R8JPSoJ6pO3VfAiVKmA9Dvx0qdE47F8SMlaauqBBRNZlPIZ8xAH7zHJTEn/LoVqmIMcKl7HiuMqxl7Ognv+0s7MllVikEM5gap6CapouxN4C2rMQt/05iafiF0yw70MXDaC6FGZOEVOGNjj+bZGwFK7ZVG1hvLvUMUJpA34uMxfNMzn5k+IfjKlSkjhB+scWFLDJE7Zs6gZ1gD2Q3+6iwlAaIkFKVmvFe5/IHHs12LSKp7bEi+K9EBnK7P0Q+RCTPd9ORU5U0LyWNfMtY47IgoQDo+y9PaqURSMOCKOo61AG7cucjzEX1NgK8Qq2QXYSIIA42sJxSOhQJqLLddpc1BXmWkwM5IueU2l9zWOydgLe9cie5NoP0idR9tKwn2fk3DCn9+YHV6F8Hufs8bMX5uIn93Le+AccJQthOv1Te6SVuURSGsl95ilKYxIX52y8vhtUQqyCNmWbYXRWyC1UVurouPXHs6hgHUpExM8fHH8hHAvNLyiN08kzNpXqjKOQD1gIBtjmR2wCkWwBaFEhDpwQ7Twjs3go2B0fZQpvemoj4DX7Dhpo/usq9qJCTje3YmifIQzIJCITqn7ae75YkL99EoNw3/blzxxyfMY7n/2K9tZfwusOjZ7rBLZFSvHw=="
+}
