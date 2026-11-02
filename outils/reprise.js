@@ -24,6 +24,11 @@ const PARTIES = {
   '08-2-equipe': ['4'],
   intersession: ['2'],
 };
+// Fichiers que vous remplissez d'un bout à l'autre de l'exercice : la reprise
+// les laisse tels quels (08-1-explorer : la colonne « Essai 1 » de la grille).
+const CONSERVES = {
+  '08-1-explorer': ['COMPARAISON.md'],
+};
 
 const exercice = process.argv[2];
 const partie = process.argv[3];
@@ -40,6 +45,8 @@ if (!parties.includes(partie)) {
 }
 
 const dossierExercice = path.join(__dirname, '..', exercice);
+// Seuls les fichiers conservés encore présents sont gardés ; un fichier absent est reposé.
+const conserves = (CONSERVES[exercice] || []).filter((nom) => fs.existsSync(path.join(dossierExercice, nom)));
 
 // Dépôt propre à l'exercice : git travaille depuis la racine de df-exercices,
 // jamais dans le dépôt de l'exercice.
@@ -82,7 +89,7 @@ fs.cpSync(dossierExercice, sauvegarde, {
 for (const nom of fs.readdirSync(dossierExercice)) {
   // .env, ignoré par git, porte vos réglages locaux : il reste en place.
   // .git, s'il existe, est le dépôt de l'exercice : il reste en place.
-  if (nom === 'node_modules' || nom === '.env' || nom === '.git') continue;
+  if (nom === 'node_modules' || nom === '.env' || nom === '.git' || conserves.includes(nom)) continue;
   fs.rmSync(path.join(dossierExercice, nom), { recursive: true, force: true });
 }
 
@@ -95,7 +102,7 @@ if (depotInterieur) {
   for (const entree of liste.stdout.split('\0').filter(Boolean)) {
     const [entete, chemin] = entree.split('\t');
     const [mode, type, objet] = entete.split(' ');
-    if (type !== 'blob') continue;
+    if (type !== 'blob' || conserves.includes(path.relative(exercice, chemin))) continue;
     const contenu = git(['cat-file', 'blob', objet], 'buffer');
     if (contenu.status !== 0) {
       arreter('Pose impossible : ' + chemin + '\nVotre travail est intact dans ' + sauvegarde);
@@ -105,7 +112,8 @@ if (depotInterieur) {
     fs.writeFileSync(cible, contenu.stdout, { mode: mode === '100755' ? 0o755 : 0o644 });
   }
 } else {
-  const pose = git(['checkout', 'FETCH_HEAD', '--', '.']);
+  const exclusions = conserves.map((nom) => ':(exclude)' + nom);
+  const pose = git(['checkout', 'FETCH_HEAD', '--', '.', ...exclusions]);
   if (pose.status !== 0) {
     arreter('Pose impossible : ' + pose.stderr.trim() + '\nVotre travail est intact dans ' + sauvegarde);
   }
@@ -114,6 +122,7 @@ if (depotInterieur) {
 
 console.log('Partie ' + partie + ' posée dans ' + exercice + '/.');
 console.log('Votre travail précédent est copié dans ' + path.relative(racine, sauvegarde) + '/.');
+for (const nom of conserves) console.log(nom + ' est gardé tel que vous l’avez rempli.');
 console.log(exercice === '04-auditer' ? 'Vérifiez : git status --short' : 'Vérifiez : npm test');
 if (depotInterieur) {
   console.log('Votre dépôt n’a pas bougé : vérifiez les fichiers posés (git status), puis commitez et envoyez vous-même.');
