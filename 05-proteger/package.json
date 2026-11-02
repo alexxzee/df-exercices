@@ -1,0 +1,16 @@
+{
+  "name": "df-exercices-05-proteger",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remises des devis Delmas & Fournier",
+  "main": "src/remises.js",
+  "scripts": {
+    "test": "node --test --test-isolation=none \"test/**/*.js\"",
+    "anonymat": "node ../outils/anonymat.js",
+    "hook": "node ../outils/verifier-hook.js",
+    "reprise": "node ../outils/reprise.js 05-proteger"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

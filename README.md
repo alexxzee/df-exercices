@@ -22,6 +22,8 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `npm run verifier-filet` | essaie quelques modifications du code d’origine et compte celles que vos tests détectent ; demande la clé que donne le formateur |
 | `npm run test:couverture` | lance les mêmes tests et affiche le rapport de couverture : les lignes et les branches du code que les tests exécutent |
 | `npm run verifier-tests` | lance vos tests sur un code conforme à la spec, puis sur des copies où un écart a été glissé, et compte les écarts que vos tests détectent ; demande la clé que donne le formateur |
+| `npm run anonymat -- <fichier>` | compte, dans un ticket, les données personnelles et la clé encore lisibles, et les informations utiles au diagnostic |
+| `npm run hook` | lance la commande de hook déclarée pour votre outil sur trois actions simulées et dit lesquelles elle refuse |
 | `npm run reprise -- <partie>` | pose l’état prêt d’une partie si vous avez pris du retard (une copie de votre travail est gardée dans `.sauvegardes/`) |
 
 ## Contenu
@@ -31,4 +33,5 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `01-date-livraison/` | écrire la date de livraison prévue, du ticket au test, puis les consignes de l’équipe |
 | `02-1-tests-depuis-la-spec/` | écrire les tests du calcul des devis depuis la spec, faire corriger le calcul, ranger le prompt réutilisable |
 | `03-refactoriser/` | caractériser puis refactoriser le bon de préparation |
+| `05-proteger/` | fouiller une copie exposée, anonymiser un ticket avant de le confier, brancher un hook qui refuse à l’agent la lecture des secrets |
 | `outils/` | outillage partagé par les exercices : ne pas modifier |

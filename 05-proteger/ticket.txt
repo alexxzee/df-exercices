@@ -1,0 +1,20 @@
+Ticket support n° 4127, reçu le 3 mars 2026
+De : Nadia Ferrand <n.ferrand@renov-alpes-12.example>
+Société : Rénov Alpes 12, 14 rue des Tanneurs, 73000 Chambéry
+Numéro client : C-00412
+Objet : remise absente sur le devis D-2026-0412
+
+Bonjour,
+
+Sur le devis D-2026-0412, nous avons commandé 10 boîtes de vis inox 6x60
+(référence VIS-INOX-6X60) à 18,90 € HT la boîte. Aucune remise n'apparaît,
+alors que vos conditions annoncent 5 % à partir de 10 unités.
+Pouvez-vous corriger le devis ?
+
+Autre souci : depuis hier, notre logiciel ne récupère plus vos devis.
+Voici la ligne de son journal :
+2026-03-03 09:14:07 ERREUR api.df-commandes : HTTP 401, api_key=dfc_live_9Tq4Wm2Xs7Lb5Rz8Kd3Nv6Hy1Pc0Fj
+
+Cordialement,
+Nadia Ferrand
+Responsable achats, Rénov Alpes 12
