@@ -16,6 +16,7 @@ const PARTIES = {
   '03-refactoriser': ['3', '4', '5'],
   '04-auditer': ['3', '5', '6'],
   '05-proteger': ['4', '7'],
+  '08-1-explorer': ['3'],
 };
 
 const exercice = process.argv[2];

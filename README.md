@@ -25,6 +25,7 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `npm run anonymat -- <fichier>` | compte, dans un ticket, les données personnelles et la clé encore lisibles, et les informations utiles au diagnostic |
 | `npm run hook` | lance la commande de hook déclarée pour votre outil sur trois actions simulées et dit lesquelles elle refuse |
 | `npm run verifier-audit` | compare le tableau de `AUDIT.md` aux emplacements des failles attendues et compte celles que l’audit a localisées ; demande la clé que donne le formateur |
+| `npm run verifier-explorer` | vérifie, sur trois lignes, l’endroit où la règle demandée est appliquée, la règle elle-même et le test qui la protège ; demande la clé écrite dans la fiche |
 | `npm run reprise -- <partie>` | pose l’état prêt d’une partie si vous avez pris du retard (une copie de votre travail est gardée dans `.sauvegardes/`) |
 
 ## Contenu
@@ -37,4 +38,5 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `03-refactoriser/` | caractériser puis refactoriser le bon de préparation |
 | `04-auditer/` | construire un agent auditeur en lecture seule, le mesurer et le corriger, puis corriger une faille du script de synchronisation des tarifs (Python) |
 | `05-proteger/` | fouiller une copie exposée, anonymiser un ticket avant de le confier, brancher un hook qui refuse à l’agent la lecture des secrets |
+| `08-1-explorer/` | faire chercher un agent explorateur en lecture seule avant de modifier, dans un dépôt d’une soixantaine de fichiers |
 | `outils/` | outillage partagé par les exercices : ne pas modifier |
