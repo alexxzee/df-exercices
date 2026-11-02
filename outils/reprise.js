@@ -65,7 +65,8 @@ fs.cpSync(dossierExercice, sauvegarde, {
 
 // 2. On vide le dossier de l'exercice (le dossier lui-même reste, il est ouvert dans l'éditeur).
 for (const nom of fs.readdirSync(dossierExercice)) {
-  if (nom === 'node_modules') continue;
+  // .env, ignoré par git, porte vos réglages locaux : il reste en place.
+  if (nom === 'node_modules' || nom === '.env') continue;
   fs.rmSync(path.join(dossierExercice, nom), { recursive: true, force: true });
 }
 
