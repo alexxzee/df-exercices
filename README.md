@@ -33,6 +33,7 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 |---|---|
 | `01-date-livraison/` | écrire la date de livraison prévue, du ticket au test, puis les consignes de l’équipe |
 | `02-1-tests-depuis-la-spec/` | écrire les tests du calcul des devis depuis la spec, faire corriger le calcul, ranger le prompt réutilisable |
+| `02-2-documenter/` | décrire la pull request du calcul corrigé, écrire la JSDoc et le README, vérifier chaque élément dans le dossier |
 | `03-refactoriser/` | caractériser puis refactoriser le bon de préparation |
 | `04-auditer/` | construire un agent auditeur en lecture seule, le mesurer et le corriger, puis corriger une faille du script de synchronisation des tarifs (Python) |
 | `05-proteger/` | fouiller une copie exposée, anonymiser un ticket avant de le confier, brancher un hook qui refuse à l’agent la lecture des secrets |

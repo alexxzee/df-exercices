@@ -1,0 +1,15 @@
+{
+  "name": "df-exercices-02-2-documenter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calcul des devis Delmas & Fournier",
+  "main": "src/devis/calcul.js",
+  "scripts": {
+    "test": "node --test --test-isolation=none \"test/**/*.js\"",
+    "test:couverture": "node --test --test-isolation=none --experimental-test-coverage \"test/**/*.js\"",
+    "exemple-devis": "node -p \"require('./src/devis/calcul').calculerDevis({ grand_compte: false }, [{ produit: { reference: 'VIS', prix_ht: 10 }, quantite: 10 }])\""
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

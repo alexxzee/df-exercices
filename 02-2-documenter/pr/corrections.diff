@@ -1,0 +1,292 @@
+diff --git a/src/devis/calcul.js b/src/devis/calcul.js
+index 2539687..098fdb3 100644
+--- a/src/devis/calcul.js
++++ b/src/devis/calcul.js
+@@ -4,15 +4,19 @@ const TAUX_TVA = 0.2;
+ const SEUIL_PORT_GRATUIT = 500;
+ const FRAIS_PORT = 25;
+ const REMISE_GRAND_COMPTE = 0.05;
++const PLAFOND_REMISE = 0.15;
+ 
+ function arrondir(montant) {
+-  return Math.round(montant * 100) / 100;
++  // Decaler la virgule sans l'erreur binaire de la multiplication par 100.
++  const [coefficient, exposant = '0'] = montant.toString().split('e');
++  const centimes = Number(`${coefficient}e${Number(exposant) + 2}`);
++  return Math.round(centimes) / 100;
+ }
+ 
+ function tauxRemiseQuantite(quantite) {
+   if (quantite >= 100) return 0.12;
+   if (quantite >= 50) return 0.08;
+-  if (quantite > 10) return 0.05;
++  if (quantite >= 10) return 0.05;
+   return 0;
+ }
+ 
+@@ -42,7 +46,9 @@ function calculerDevis(client, lignes) {
+ 
+   let remiseClient = 0;
+   if (client.grand_compte) {
+-    remiseClient = totalNet * REMISE_GRAND_COMPTE;
++    const remiseQuantite = details.reduce((somme, d) => somme + d.remise, 0);
++    const plafondRestant = Math.max(0, totalBrut * PLAFOND_REMISE - remiseQuantite);
++    remiseClient = Math.min(totalNet * REMISE_GRAND_COMPTE, plafondRestant);
+     totalNet -= remiseClient;
+   }
+ 
+diff --git a/test/depuis-la-spec.test.js b/test/depuis-la-spec.test.js
+new file mode 100644
+index 0000000..24d9ff3
+--- /dev/null
++++ b/test/depuis-la-spec.test.js
+@@ -0,0 +1,249 @@
++'use strict';
++
++const { test } = require('node:test');
++const assert = require('node:assert/strict');
++const {
++  arrondir,
++  tauxRemiseQuantite,
++  calculerLigne,
++  calculerDevis,
++} = require('../src/devis/calcul.js');
++
++// Attendus calcules a la main depuis docs/regles-remises.md.
++for (const [quantite, taux, brut, remise, net] of [
++  // Prix unitaire : 10 euros ; net = brut - remise.
++  [9, 0, 90, 0, 90],
++  [10, 0.05, 100, 5, 95],
++  [49, 0.05, 490, 24.5, 465.5],
++  [50, 0.08, 500, 40, 460],
++  [99, 0.08, 990, 79.2, 910.8],
++  [100, 0.12, 1000, 120, 880],
++]) {
++  // Spec §2 : « de 1 à 9 : aucune », « à partir de 10 : 5 % »,
++  // « à partir de 50 : 8 % », « à partir de 100 : 12 % ».
++  // « Les seuils sont inclus : une ligne de 10 unités bénéficie de la remise de 5 %. »
++  test(`le taux de remise respecte la spec pour ${quantite} unites`, () => {
++    assert.equal(tauxRemiseQuantite(quantite), taux);
++  });
++
++  // Spec §1 : « Le montant brut d’une ligne est le prix unitaire HT du produit
++  // multiplié par la quantité. » §2 : remises de 0 %, 5 %, 8 %, 12 %
++  // aux seuils inclus de 1, 10, 50 et 100 unites ; §6 : arrondi au centime.
++  test(`les montants de la ligne respectent la spec pour ${quantite} unites`, () => {
++    assert.deepEqual(calculerLigne({ reference: 'PRODUIT', prix_ht: 10 }, quantite), {
++      reference: 'PRODUIT',
++      quantite,
++      prixUnitaire: 10,
++      brut,
++      remise,
++      net,
++    });
++  });
++}
++
++// Spec §1 : « La quantité est un nombre entier strictement positif.
++// Toute autre valeur est refusée. » La borne minimale valide est donc 1.
++test('une ligne accepte une unite', () => {
++  assert.deepEqual(calculerLigne({ reference: 'UNITE', prix_ht: 12.5 }, 1), {
++    reference: 'UNITE',
++    quantite: 1,
++    prixUnitaire: 12.5,
++    brut: 12.5,
++    remise: 0,
++    net: 12.5,
++  });
++});
++
++// Spec §1 : « La quantité est un nombre entier strictement positif.
++// Toute autre valeur est refusée. » Zero est juste sous la borne valide de 1.
++test('une ligne refuse les quantites invalides', () => {
++  for (const quantite of [0, -1, 0.5, 1.5, '1', null, undefined, true, NaN, Infinity]) {
++    assert.throws(() => calculerLigne({ reference: 'INVALIDE', prix_ht: 10 }, quantite));
++  }
++});
++
++// Spec §2 : « Remise sur quantité, par ligne » et « de 1 à 9 : aucune ».
++// Deux lignes de 6 unites a 10 euros : 60 + 60 = 120, sans remise.
++// §5 et 6 : HT = 120 + 25 = 145 ; TVA = 29 ; TTC = 174.
++test('les quantites de lignes distinctes ne se cumulent pas pour la remise', () => {
++  const devis = calculerDevis({ grand_compte: false }, [
++    { produit: { reference: 'PREMIER', prix_ht: 10 }, quantite: 6 },
++    { produit: { reference: 'SECOND', prix_ht: 10 }, quantite: 6 },
++  ]);
++  assert.deepEqual(devis.lignes.map((ligne) => ligne.remise), [0, 0]);
++  assert.equal(devis.totalBrut, 120);
++  assert.equal(devis.remiseClient, 0);
++  assert.equal(devis.port, 25);
++  assert.equal(devis.totalHT, 145);
++  assert.equal(devis.tva, 29);
++  assert.equal(devis.totalTTC, 174);
++});
++
++// Spec §3 : « Un client classé “grand compte” bénéficie d’une remise
++// supplémentaire de 5 %, appliquée sur le total des lignes après remises sur quantité. »
++// §2 : 50 × 10 = 500, remise 40, net 460 ; 2 × 100 = 200 sans remise.
++// Grand compte : (460 + 200) × 5 % = 33 ; HT = 627.
++// §4 et 6 : remise totale 73 < 105 (plafond), port offert, TVA 125,40, TTC 752,40.
++test('la remise grand compte porte sur les lignes deja remisees', () => {
++  assert.deepEqual(calculerDevis({ grand_compte: true }, [
++    { produit: { reference: 'SERIE', prix_ht: 10 }, quantite: 50 },
++    { produit: { reference: 'PIECE', prix_ht: 100 }, quantite: 2 },
++  ]), {
++    lignes: [
++      { reference: 'SERIE', quantite: 50, prixUnitaire: 10, brut: 500, remise: 40, net: 460 },
++      { reference: 'PIECE', quantite: 2, prixUnitaire: 100, brut: 200, remise: 0, net: 200 },
++    ],
++    totalBrut: 700,
++    remiseClient: 33,
++    port: 0,
++    totalHT: 627,
++    tva: 125.4,
++    totalTTC: 752.4,
++  });
++});
++
++for (const [prix, totalBrut, remiseClient, totalHT, tva, totalTTC] of [
++  // Sous le plafond : brut 1199 + 700 = 1899 ; quantite 143,88 + 56 = 199,88.
++  // Net 1699,12 ; grand compte 84,956 -> 84,96 ; cumul affiche 284,84,
++  // soit un centime sous le plafond affiche de 284,85 (15 % de 1899).
++  // HT 1699,12 - 84,956 = 1614,164 -> 1614,16 ; TVA 322,832 -> 322,83.
++  [11.99, 1899, 84.96, 1614.16, 322.83, 1936.99],
++  // Plafond exact : brut 1200 + 700 = 1900 ; quantite 144 + 56 = 200.
++  // Net 1700 ; grand compte 85 ; cumul 285 = 15 % de 1900.
++  // HT 1615 ; TVA 323 ; TTC 1938.
++  [12, 1900, 85, 1615, 323, 1938],
++  // Juste au-dessus : brut 1201 + 700 = 1901 ; quantite 144,12 + 56 = 200,12.
++  // Grand compte nominal 1700,88 × 5 % = 85,044 ; cumul 285,164 > 285,15.
++  // Grand compte plafonne a 285,15 - 200,12 = 85,03 ; HT 1615,85 ; TVA 323,17.
++  [12.01, 1901, 85.03, 1615.85, 323.17, 1939.02],
++]) {
++  // Spec §4 : « Le total des remises (quantité et grand compte) ne dépasse jamais
++  // 15 % du total brut du devis. Si le cumul dépasse ce plafond, la remise grand
++  // compte est réduite d’autant. » §2 et 3 : taux de 12 %, 8 %, puis 5 %.
++  // §5 et 6 : port offert au-dessus de 500 euros ; TVA 20 % et arrondis au centime.
++  test(`le plafond global respecte la spec avec un prix de ${prix} euros`, () => {
++    const devis = calculerDevis({ grand_compte: true }, [
++      { produit: { reference: 'CENT', prix_ht: prix }, quantite: 100 },
++      { produit: { reference: 'CINQUANTE', prix_ht: 14 }, quantite: 50 },
++    ]);
++    assert.equal(devis.totalBrut, totalBrut);
++    assert.equal(devis.remiseClient, remiseClient);
++    assert.equal(devis.port, 0);
++    assert.equal(devis.totalHT, totalHT);
++    assert.equal(devis.tva, tva);
++    assert.equal(devis.totalTTC, totalTTC);
++  });
++}
++
++// Spec §4 : « Le total des remises (quantité et grand compte) ne dépasse jamais
++// 15 % du total brut du devis. Si le cumul dépasse ce plafond, la remise grand
++// compte est réduite d’autant. » §2 et 3 : 100 × 10 = 1000 ; remise quantite 120 ;
++// grand compte nominal 880 × 5 % = 44, reduit a 150 - 120 = 30.
++// §5 et 6 : HT 850, port offert, TVA 170, TTC 1020.
++test('le plafond reduit la remise grand compte sans changer la remise de ligne', () => {
++  const devis = calculerDevis({ grand_compte: true }, [
++    { produit: { reference: 'PLAFOND', prix_ht: 10 }, quantite: 100 },
++  ]);
++  assert.equal(devis.lignes[0].remise, 120);
++  assert.equal(devis.lignes[0].net, 880);
++  assert.equal(devis.remiseClient, 30);
++  assert.equal(devis.totalBrut, 1000);
++  assert.equal(devis.port, 0);
++  assert.equal(devis.totalHT, 850);
++  assert.equal(devis.tva, 170);
++  assert.equal(devis.totalTTC, 1020);
++});
++
++for (const [prix, port, totalHT, tva, totalTTC] of [
++  // 499,99 + 25 = 524,99 ; TVA 104,998 -> 105 ; TTC 629,99.
++  [499.99, 25, 524.99, 105, 629.99],
++  // 500 + 0 = 500 ; TVA 100 ; TTC 600.
++  [500, 0, 500, 100, 600],
++]) {
++  // Spec §5 : « 25 € HT si le total HT remisé est inférieur à 500 € » ;
++  // « Offerts à partir de 500 € HT remisé (seuil inclus) » ;
++  // « Les frais de port s’ajoutent au total HT et sont soumis à la TVA. »
++  // §6 : TVA a 20 %, arrondi au centime, puis somme du HT et de la TVA arrondis.
++  test(`les frais de port respectent la frontiere de ${prix} euros`, () => {
++    const devis = calculerDevis({ grand_compte: false }, [
++      { produit: { reference: 'PORT', prix_ht: prix }, quantite: 1 },
++    ]);
++    assert.equal(devis.remiseClient, 0);
++    assert.equal(devis.port, port);
++    assert.equal(devis.totalHT, totalHT);
++    assert.equal(devis.tva, tva);
++    assert.equal(devis.totalTTC, totalTTC);
++  });
++}
++
++// Spec §5 : « 25 € HT si le total HT remisé est inférieur à 500 € ».
++// §2 : 50 × 10 = 500 ; remise 8 % = 40 ; net 460.
++// §5 et 6 : HT 460 + 25 = 485 ; TVA 97 ; TTC 582.
++test('le seuil de port se mesure apres la remise sur quantite', () => {
++  const devis = calculerDevis({ grand_compte: false }, [
++    { produit: { reference: 'PORT-QUANTITE', prix_ht: 10 }, quantite: 50 },
++  ]);
++  assert.equal(devis.totalBrut, 500);
++  assert.equal(devis.port, 25);
++  assert.equal(devis.totalHT, 485);
++  assert.equal(devis.tva, 97);
++  assert.equal(devis.totalTTC, 582);
++});
++
++// Spec §3 : remise grand compte de 5 % apres les remises sur quantite.
++// §5 : port de 25 euros sous 500 euros HT remise ; §6 : TVA sur le port compris.
++// Brut 500, remise 25, net 475 ; HT 475 + 25 = 500 ; TVA 100 ; TTC 600.
++test('le seuil de port se mesure apres la remise grand compte', () => {
++  const devis = calculerDevis({ grand_compte: true }, [
++    { produit: { reference: 'PORT-CLIENT', prix_ht: 500 }, quantite: 1 },
++  ]);
++  assert.equal(devis.remiseClient, 25);
++  assert.equal(devis.port, 25);
++  assert.equal(devis.totalHT, 500);
++  assert.equal(devis.tva, 100);
++  assert.equal(devis.totalTTC, 600);
++});
++
++for (const [montant, attendu] of [
++  [1.0049, 1],
++  [1.005, 1.01],
++  [10.0749, 10.07],
++  [10.075, 10.08],
++]) {
++  // Spec §6 : « Chaque montant affiché est arrondi au centime le plus proche ;
++  // un demi-centime exact s’arrondit au centime supérieur. »
++  test(`l'arrondi respecte la frontiere du demi-centime pour ${montant}`, () => {
++    assert.equal(arrondir(montant), attendu);
++  });
++
++  // Spec §1 : brut = prix unitaire HT × quantite ; §2 : aucune remise a 1 unite.
++  // §6 : « Chaque montant affiché est arrondi au centime le plus proche ;
++  // un demi-centime exact s’arrondit au centime supérieur. » Brut et net sont identiques.
++  test(`les montants affiches de la ligne sont arrondis pour ${montant}`, () => {
++    const ligne = calculerLigne({ reference: 'ARRONDI', prix_ht: montant }, 1);
++    assert.equal(ligne.brut, attendu);
++    assert.equal(ligne.remise, 0);
++    assert.equal(ligne.net, attendu);
++  });
++}
++
++// Spec §3 : remise grand compte de 5 % ; §5 : port de 25 euros sous 500 euros.
++// §6 : « La TVA se calcule sur le total HT déjà arrondi, et le TTC est la somme
++// du HT et de la TVA arrondis. » Brut 1,71 ; remise 0,0855 -> 0,09 affichee ;
++// HT (1,71 - 0,0855) + 25 = 26,6245 -> 26,62 ;
++// TVA 26,62 × 20 % = 5,324 -> 5,32 ; TTC 26,62 + 5,32 = 31,94.
++test('la TVA utilise le HT arrondi et le TTC additionne les montants arrondis', () => {
++  const devis = calculerDevis({ grand_compte: true }, [
++    { produit: { reference: 'TVA-ARRONDIE', prix_ht: 1.71 }, quantite: 1 },
++  ]);
++  assert.equal(devis.remiseClient, 0.09);
++  assert.equal(devis.port, 25);
++  assert.equal(devis.totalHT, 26.62);
++  assert.equal(devis.tva, 5.32);
++  assert.equal(devis.totalTTC, 31.94);
++});
++
++// Spec §7 : « Un devis sans ligne est refusé. »
++test('un devis vide est refuse', () => {
++  assert.throws(() => calculerDevis({ grand_compte: false }, []));
++});
