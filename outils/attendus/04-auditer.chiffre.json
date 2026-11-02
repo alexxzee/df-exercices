@@ -1,0 +1,14 @@
+{
+  "avertissement": "Fichier de la formation : ne pas modifier. Emplacements chiffrés lus par npm run verifier-audit ; la clé est donnée par le formateur.",
+  "algorithme": "aes-256-gcm",
+  "derivation": {
+    "nom": "scrypt",
+    "N": 32768,
+    "r": 8,
+    "p": 1
+  },
+  "sel": "4YhGdc2FMwNdaDqN3/af4g==",
+  "iv": "BmFfK7I4UMCdsFOJ",
+  "etiquette": "Mux6+OH8kyrPZ7BKsEAtAw==",
+  "donnees": "p5FC/Fn4Q0UhL9md63x5v7uDwHHJBwDjHw9t5feZcHfRvjyMsejuQFfdaesGYcXKCOmecOSMQu3zk+foqR/pKFCyMr9G0yy1jcUtoqhkRaZflIl44PbvSqH3ECNis9Nu1Cw79aXYIeavbQLg4Ruj+bmP4E/b/eLLtGdRaC3zXiYFvOeK4f9IQR1FN8Sgbnzvios8McWo52brRrB1+vgGdpr1q9t5FaEPSpDvmNR9UgjIWpUhW5zfDcvcOw1pebKwu0g7vJJrUSqJKFyb1EDyMFA/BfLU5a2ciqKOlQGjPEAHYWpDKkgDYsBkJyEC4qMlniRvhEUJhnY87jw02yYFq+F6DoszpzhAi7n/NqIDUEab3Geym0HPyikrP6q13yEH56mPmhY/KjDCv7RxFpEnAdhfaR91kFUUkFThpD4LEu71aVWfJ0EUPpgVyy73xFuWnNhCUb5hOfW3hcsRElCEQ1usRLPabWs1GQOuZ+uxgb3Jpt60RLAI5cQ1POOr0BWz9T7Bol1fIMgHmZnqj8SB3U07Mq9C3y35MWjHMkiw4eYzYwejhZ0/39NnflLwcQOZPO8U1LX09F7DQpkmxeFOxjgdjFT+9sLYrZy1Yq5dZnBgCWWNoOConi7pEE/E54FqcZlX7/FjirmKU1UsepC74bdNja9u5k5ZKnaDvUQ7FCnC4my2J7O5fTKt4PTA5gkx+sHRiT1Dqk2LTHcpGi0iy70UxNpymOA184KW38s1GbW5jJLMPVzYYAyu0Cx+uUU88SYcPclLfZtIGVJOzc8nJbJrkH/oDJqNyMEoDcducJxV4BiE3zKPCInVf+GBGOi9mdCuVfpUE6SiUGxvSVB+khdLlPmHhJjhbYJ10ZycsLgBEGtvKFOK/3g+/buDJdvC0A0fE8zamfW2Ps/5kwyoI8mHcOgrJuNL1sJR"
+}

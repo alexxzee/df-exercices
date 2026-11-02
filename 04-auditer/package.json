@@ -1,0 +1,13 @@
+{
+  "name": "df-exercices-04-auditer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Synchronisation des tarifs Matériaux Rivière (script Python à auditer)",
+  "scripts": {
+    "verifier-audit": "node ../outils/verifier-audit.js 04-auditer",
+    "reprise": "node ../outils/reprise.js 04-auditer"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
