@@ -22,6 +22,10 @@ Le module édite le bon de préparation que l’entrepôt imprime pour chaque co
 - Tests avec `node:test` et `node:assert/strict` ; un fichier `test/<module>.test.js`.
 - Le texte produit est lu par l’entrepôt : toute différence de sortie, même un espace, change le bon imprimé.
 
+## Boîte à outils
+
+- `prompts/tests-depuis-la-spec.md` : demande de tests écrits depuis une spec, à joindre à toute demande de tests.
+
 ## Repères du code durable
 
 1. Conventions du projet respectées (celles de ce fichier).
