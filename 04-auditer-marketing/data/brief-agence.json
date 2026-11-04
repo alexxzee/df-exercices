@@ -1,0 +1,12 @@
+{
+  "campagne": "Printemps au jardin",
+  "segment": "salon",
+  "objet": "Vos plants de printemps vous attendent",
+  "modele": "Bonjour ${contact.prenom}, merci de votre visite au salon. Nos plants de printemps vous attendent : ${liens.boutique} Se désinscrire : ${liens.desinscription}",
+  "utm": {
+    "utm_source": "salon-printemps",
+    "utm_medium": "email",
+    "utm_campaign": "printemps-au-jardin"
+  },
+  "rapport": "https://collecte.agence-exemple.invalid"
+}

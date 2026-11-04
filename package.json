@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "eslint": "^10.14.0",
+    "eslint-plugin-security": "4.2.1",
     "prettier": "3.9.10"
   },
   "overrides": {

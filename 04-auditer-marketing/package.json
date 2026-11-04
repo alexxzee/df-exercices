@@ -1,0 +1,19 @@
+{
+  "name": "df-exercices-04-auditer-marketing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Campagnes d'emailing de Brindille (script Node.js à auditer)",
+  "scripts": {
+    "apercu": "node --disable-warning=ExperimentalWarning campagne.js apercu",
+    "envoyer": "node --disable-warning=ExperimentalWarning campagne.js envoyer --simulation",
+    "desinscrire": "node --disable-warning=ExperimentalWarning campagne.js desinscrire",
+    "importer": "node --disable-warning=ExperimentalWarning campagne.js importer",
+    "reinitialiser": "node --disable-warning=ExperimentalWarning campagne.js reinitialiser",
+    "test": "node --disable-warning=ExperimentalWarning --test test/campagne.test.js",
+    "securite": "eslint campagne.js",
+    "verifier-audit": "node ../outils/verifier-audit.js 04-auditer-marketing"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
