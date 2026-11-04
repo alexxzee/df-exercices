@@ -1,6 +1,6 @@
 ---
 name: dev-web
-description: Développeur web de l'équipe. Seul à écrire dans src/ : implémente une route et sa page dans les fichiers que la consigne autorise.
+description: "Développeur web de l'équipe. Seul à écrire dans src/ : implémente une route et sa page dans les fichiers que la consigne autorise."
 tools: ['read', 'search', 'edit', 'execute']
 ---
 <!-- Fichier de la formation : ne pas modifier. -->
