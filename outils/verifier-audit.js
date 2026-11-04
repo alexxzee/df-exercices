@@ -67,7 +67,9 @@ function citations(texte) {
     const morceaux = cellules(ligne);
     // Sans colonne repérable, on lit les « fichier.py:ligne » de toute la ligne.
     const source = colonne >= 0 ? morceaux[colonne] || '' : (ligne.match(/\.py\s*:\s*[\d\s,\-à]+/g) || []).join(' ');
-    for (const [debut, fin] of emplacements(source)) vues.set(debut + '-' + fin, [debut, fin]);
+    // Une citation d'un fichier de données (brief.json:5, import.csv:3) ne désigne pas une ligne du script audité.
+    const sansDonnees = source.replace(/[\w./-]+\.(?:json|csv)\s*:\s*\d+(?:\s*(?:-|à)\s*\d+)?/g, '');
+    for (const [debut, fin] of emplacements(sansDonnees)) vues.set(debut + '-' + fin, [debut, fin]);
   }
   return [...vues.values()];
 }
