@@ -233,7 +233,8 @@ async function verifier() {
     console.log('Vérification : ' + attendus.titre);
     const endroit = ligneEndroit(change, devisInchange, attendus);
     console.log(endroit.texte);
-    console.log('Règle : ' + (attendus.cas.length - fausses.length) + ' situations justes sur ' + attendus.cas.length + '.');
+    const nbJustes = attendus.cas.length - fausses.length;
+    console.log('Règle : ' + nbJustes + (nbJustes > 1 ? ' situations justes' : ' situation juste') + ' sur ' + attendus.cas.length + '.');
     for (const cas of fausses) console.log('- Fausse : ' + cas.description + '.');
     const test = await ligneTest(copie, attendus);
     console.log(test.texte);
