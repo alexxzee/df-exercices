@@ -39,7 +39,7 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `02-1-tests-depuis-la-spec/` | écrire les tests du calcul des devis depuis la spec, faire corriger le calcul, ranger le prompt réutilisable |
 | `02-2-documenter/` | décrire la pull request du calcul corrigé, écrire la JSDoc et le README, vérifier chaque élément dans le dossier |
 | `03-refactoriser/` | caractériser puis refactoriser le bon de préparation |
-| `04-auditer/` | construire un agent auditeur en lecture seule, le mesurer et le corriger, puis corriger une faille du script de synchronisation des tarifs (Python) |
+| `04-auditer/` | construire un agent auditeur en lecture seule, le mesurer, puis corriger une faille du script de synchronisation des tarifs (Python) |
 | `05-proteger/` | fouiller une copie exposée, anonymiser un ticket avant de le confier, brancher un hook qui refuse à l’agent la lecture des secrets |
 | `06-integrer/` | envoyer le projet dans votre dépôt GitHub, faire écrire un pipeline CI qui bloque un secret, faire relire chaque pull request par votre agent de revue, puis décider ; ce sous-dossier porte son propre dépôt git et ses propres dépendances : `npm install` se lance aussi dans `06-integrer/` |
 | `08-equipe/` | découper un agent qui charge tout en agent, skill et documentation, puis confier une page à une équipe d’agents et la juger par une commande |

@@ -17,7 +17,7 @@ const PARTIES = {
   '01-date-livraison': ['3', '5'],
   '02-1-tests-depuis-la-spec': ['4', '5', '7'],
   '03-refactoriser': ['3', '4', '5'],
-  '04-auditer': ['3', '5', '6'],
+  '04-auditer': ['3', '5'],
   '05-proteger': ['4', '7'],
   '06-integrer': ['3', '5', '6'],
   '08-equipe': ['3', '4'],

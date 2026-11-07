@@ -28,7 +28,8 @@ function pluriel(n, mot) {
   return n + ' ' + mot + (n > 1 ? 's' : '');
 }
 
-// Le tableau d'audit est celui qui suit le titre, avant la première section « ## ».
+// Le tableau d'audit : les lignes qui commencent par « | », avant la première section « ## » s'il y en a une.
+// Le texte autour (phrases de l'auditeur, verdict) est ignoré : la réponse se colle entière.
 function lignesDuTableau(texte) {
   const debut = texte.split(/\r?\n/);
   const lignes = [];
@@ -140,8 +141,9 @@ async function mesurer() {
   const cites = fs.existsSync(chemin) ? citations(fs.readFileSync(chemin, 'utf8')) : [];
   if (cites.length === 0) {
     console.log(
-      'Aucune ligne citée dans le tableau de AUDIT.md. Collez le tableau de l’auditeur sous le titre, ' +
-        'avant la section « Mesures », avec une colonne Fichier:ligne, puis relancez npm run verifier-audit.',
+      'Aucune ligne citée dans le tableau de AUDIT.md. Copiez toute la réponse de l’auditeur ' +
+        '(Copilot : Copier ; Codex et Claude Code : /copy), collez-la dans AUDIT.md (Ctrl + A, puis Ctrl + V), ' +
+        'enregistrez, puis relancez npm run verifier-audit.',
     );
     process.exitCode = 1;
     return;
