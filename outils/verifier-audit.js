@@ -34,7 +34,10 @@ function lignesDuTableau(texte) {
   const debut = texte.split(/\r?\n/);
   const lignes = [];
   for (const ligne of debut) {
-    if (/^##\s/.test(ligne)) break;
+    if (/^##\s/.test(ligne)) {
+      if (lignes.length > 0) break;
+      continue;
+    }
     if (/^\s*\|/.test(ligne)) lignes.push(ligne);
   }
   return lignes;
