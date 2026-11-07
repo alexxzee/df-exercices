@@ -13,7 +13,7 @@ Le script `sync_tarifs.py` met à jour la base des produits de Delmas & Fournier
 ## Commandes
 
 - `python3 -m unittest` : lance les tests de `tests/` (sous Windows : `py -m unittest`).
-- `python3 -m bandit sync_tarifs.py` : analyse statique de sécurité (Bandit).
+- `~/formation-ia/.venv/bin/bandit sync_tarifs.py` : analyse statique de sécurité (Bandit, installé dans `~/formation-ia/.venv` ; sous Windows : `py -m bandit sync_tarifs.py`).
 - `npm run verifier-audit` : compare le tableau de `AUDIT.md` aux emplacements attendus. Il demande la clé du formateur : c’est l’utilisateur qui le lance, dans son terminal.
 
 ## Conventions

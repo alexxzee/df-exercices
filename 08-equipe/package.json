@@ -1,0 +1,18 @@
+{
+  "name": "df-exercices-08-equipe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "D&F Commandes : consultation des clients et des devis",
+  "main": "src/serveur.js",
+  "scripts": {
+    "start": "node src/serveur.js",
+    "test": "node --test --test-isolation=none \"test/**/*.test.js\"",
+    "verifier": "node ../outils/verifier-boite.js",
+    "verifier-architecture": "node ../outils/verifier-architecture.js 08-equipe",
+    "devis-du-jour": "node ../outils/verifier-devis-du-jour.js 08-equipe",
+    "reprise": "node ../outils/reprise.js 08-equipe"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

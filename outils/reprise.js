@@ -17,17 +17,19 @@ const PARTIES = {
   '01-date-livraison': ['3', '5'],
   '02-1-tests-depuis-la-spec': ['4', '5', '7'],
   '03-refactoriser': ['3', '4', '5'],
-  '04-auditer': ['3', '5', '6'],
+  '04-auditer': ['3', '5'],
   '05-proteger': ['4', '7'],
   '06-integrer': ['3', '5', '6'],
-  '08-1-explorer': ['3'],
-  '08-2-equipe': ['4'],
+  '08-equipe': ['3', '4'],
   intersession: ['2'],
 };
 // Fichiers que vous remplissez d'un bout à l'autre de l'exercice : la reprise
-// les laisse tels quels (08-1-explorer : la colonne « Essai 1 » de la grille).
-const CONSERVES = {
-  '08-1-explorer': ['COMPARAISON.md'],
+// les laisse tels quels. Aucun exercice n'en a pour l'instant.
+const CONSERVES = {};
+// Dossier dont la branche ne suit pas la règle du préfixe numérique :
+// 08-equipe porte les deux ateliers du chapitre, ses branches gardent le nom entier.
+const BRANCHES = {
+  '08-equipe': '08-equipe',
 };
 
 const exercice = process.argv[2];
@@ -65,7 +67,7 @@ const racine = racineGit.stdout.trim();
 
 // Préfixe numérique du dossier : 01-date-livraison donne 01, 02-1-tests-depuis-la-spec donne 02-1.
 // Un dossier sans numéro (intersession) garde son nom entier.
-const prefixe = (exercice.match(/^\d+(-\d+)?(?=-)/) || [exercice])[0];
+const prefixe = BRANCHES[exercice] || (exercice.match(/^\d+(-\d+)?(?=-)/) || [exercice])[0];
 const branche = prefixe + '/partie-' + partie;
 console.log('Récupération de la partie ' + partie + ' (' + branche + ')…');
 // --depth 1 : seul l'état de la partie est récupéré, sans l'historique du dépôt des reprises.
