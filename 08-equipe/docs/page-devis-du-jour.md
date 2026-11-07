@@ -1,5 +1,7 @@
 # Page des devis du jour
 
+<!-- Fichier de la formation : ne pas modifier. -->
+
 Demande du service commercial de Delmas & Fournier, octobre 2026.
 
 ## Besoin
