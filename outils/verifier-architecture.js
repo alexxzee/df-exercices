@@ -16,11 +16,9 @@ if (!exercice) {
 const dossier = path.join(__dirname, '..', exercice);
 
 const AGENTS = ['.github/agents/testeur.agent.md', '.claude/agents/testeur.md', '.codex/agents/testeur.toml'];
-const SKILLS = [
-  '.github/skills/tester-une-route/SKILL.md',
-  '.agents/skills/tester-une-route/SKILL.md',
-  '.claude/skills/tester-une-route/SKILL.md',
-];
+// Copilot et Codex lisent .agents/skills (dans VS Code, ce dossier masque .github/skills) ;
+// Claude Code lit .claude/skills.
+const SKILLS = ['.agents/skills/tester-une-route/SKILL.md', '.claude/skills/tester-une-route/SKILL.md'];
 const DOCUMENTATION = 'docs/tests-du-projet.md';
 
 // Repères tirés de l'agent fourni : quelques lignes de chaque partie suffisent à la reconnaître.
@@ -107,7 +105,7 @@ controler('Agent, faits du projet retirés', agent.sansFaits, 'des faits du proj
 controler('Agent, nomme le skill tester-une-route', agent.nommeSkill);
 controler('Agent, nomme ' + DOCUMENTATION, agent.nommeDocumentation);
 
-// 2. Le skill : l'un des trois dossiers suffit.
+// 2. Le skill : l'un des deux dossiers suffit.
 const skills = SKILLS.map((chemin) => {
   const texte = lire(chemin);
   return texte === null ? null : { chemin, texte, methode: compter(texte, METHODE) };
