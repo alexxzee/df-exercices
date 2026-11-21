@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Relais{% endblock %}</title>
+        <style>
+            body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 52rem; padding: 0 1rem; color: #1f2328; }
+            header { border-bottom: 1px solid #d0d7de; margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
+            header a { color: inherit; font-weight: 600; text-decoration: none; }
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border-bottom: 1px solid #d0d7de; padding: 0.5rem; text-align: left; }
+            dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; }
+            dt { font-weight: 600; }
+            .message { background: #fff8c5; border: 1px solid #d4a72c; padding: 0.5rem 0.75rem; }
+            .actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+            button { font: inherit; padding: 0.4rem 0.9rem; cursor: pointer; }
+        </style>
+    </head>
+    <body>
+        <header><a href="{{ path('demande_liste') }}">Relais</a></header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>

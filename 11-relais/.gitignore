@@ -1,0 +1,6 @@
+vendor/
+var/
+node_modules/
+test-results/
+playwright-report/
+config/reference.php

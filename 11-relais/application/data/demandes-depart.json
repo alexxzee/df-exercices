@@ -1,0 +1,9 @@
+[
+    {"id": "D-101", "objet": "Porte de placard qui frotte après la pose", "statut": "ouverte", "technicien": null, "relecteur": null},
+    {"id": "D-102", "objet": "Joint de baignoire à reprendre", "statut": "ouverte", "technicien": "Nadia", "relecteur": "Paul"},
+    {"id": "D-103", "objet": "Prise électrique sans courant dans la cuisine", "statut": "en_cours", "technicien": "Nadia", "relecteur": "Nadia"},
+    {"id": "D-104", "objet": "Fuite sous l’évier après remplacement du siphon", "statut": "en_revue", "technicien": "Nadia", "relecteur": "Paul"},
+    {"id": "D-105", "objet": "Plinthe décollée dans le couloir", "statut": "terminee", "technicien": "Nadia", "relecteur": "Paul"},
+    {"id": "D-106", "objet": "Volet roulant bruyant", "statut": "abandonnee", "technicien": "Nadia", "relecteur": null},
+    {"id": "D-107", "objet": "Carrelage fissuré dans la salle de bains", "statut": "en_cours", "technicien": "Nadia", "relecteur": "Paul"}
+]
