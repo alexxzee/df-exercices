@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes de SAV{% endblock %}
+
+{% block body %}
+    {% set statuts = {ouverte: 'ouverte', en_cours: 'en cours', en_revue: 'en revue', terminee: 'terminée', abandonnee: 'abandonnée'} %}
+    <h1>Demandes de SAV</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Demande</th>
+                <th>Objet</th>
+                <th>Statut</th>
+                <th>Technicien</th>
+                <th>Relecteur</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demande in demandes %}
+                <tr>
+                    <td><a href="{{ path('demande_voir', {id: demande.id}) }}">{{ demande.id }}</a></td>
+                    <td>{{ demande.objet }}</td>
+                    <td>{{ statuts[demande.statut] }}</td>
+                    <td>{{ demande.technicien ?? 'aucun' }}</td>
+                    <td>{{ demande.relecteur ?? 'aucun' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
