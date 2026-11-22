@@ -1,0 +1,14 @@
+diff --git a/11-relais/application/src/Relais/Transitions.php b/11-relais/application/src/Relais/Transitions.php
+index 955aad4..77a673a 100644
+--- a/11-relais/application/src/Relais/Transitions.php
++++ b/11-relais/application/src/Relais/Transitions.php
+@@ -35,7 +35,8 @@ final class Transitions
+      */
+     private static function peutTerminer(string $acteur, ?string $relecteur): bool
+     {
+-        return $relecteur !== null && $acteur === $relecteur;
++        // RL-12 : tout membre de l'équipe peut terminer une demande en revue (réunion du 17/11).
++        return $relecteur !== null || $acteur === $relecteur;
+     }
+ 
+     /**

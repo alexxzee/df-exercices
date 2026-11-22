@@ -25,9 +25,17 @@ final class Transitions
         return match ($statut) {
             'ouverte' => $technicien !== null && $acteur === $technicien ? ['demarrer'] : [],
             'en_cours' => $acteur === $technicien && $relecteur !== null && $relecteur !== $technicien ? ['envoyer_en_revue'] : [],
-            'en_revue' => $acteur === $relecteur ? ['terminer', 'renvoyer'] : [],
+            'en_revue' => self::peutTerminer($acteur, $relecteur) ? ['terminer', 'renvoyer'] : [],
             default => [],
         };
+    }
+
+    /**
+     * Qui peut terminer ou renvoyer une demande en revue.
+     */
+    private static function peutTerminer(string $acteur, ?string $relecteur): bool
+    {
+        return $relecteur !== null && $acteur === $relecteur;
     }
 
     /**

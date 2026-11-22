@@ -16,13 +16,21 @@
     },
     "config": {
         "allow-plugins": {
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "infection/extension-installer": false
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.4.1"
+        }
     },
     "autoload": {
         "psr-4": {
             "App\\": "src/"
         }
+    },
+    "require-dev": {
+        "infection/infection": "^0.35.12",
+        "phpunit/phpunit": "^12"
     }
 }

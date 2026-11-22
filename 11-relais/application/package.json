@@ -4,7 +4,8 @@
   "private": true,
   "description": "Relais : tests de bout en bout de l'application de démonstration",
   "scripts": {
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "verifier-poste": "node ../outils/verifier-poste.js"
   },
   "devDependencies": {
     "@playwright/test": "1.65.1"
