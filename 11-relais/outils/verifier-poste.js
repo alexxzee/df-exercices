@@ -10,6 +10,7 @@ const path = require('node:path');
 
 const application = process.cwd();
 const mac = process.platform === 'darwin';
+const windows = process.platform === 'win32';
 const manques = [];
 let piloteAbsent = false;
 
@@ -24,22 +25,22 @@ function lancer(commande, args) {
 // 1. PHP 8.4 ou plus récent, et ses extensions.
 const version = lancer('php', ['-r', 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;']);
 if (version === null) {
-  manques.push(mac ? 'PHP introuvable : brew install php' : 'PHP introuvable : installez PHP 8.4 ou plus récent (sudo apt install php-cli)');
+  manques.push(mac ? 'PHP introuvable : brew install php' : windows ? 'PHP introuvable : winget install PHP.PHP.8.4, puis rouvrez le terminal' : 'PHP introuvable : installez PHP 8.4 ou plus récent (sudo apt install php-cli)');
 } else {
   const [majeur, mineur] = version.split('.').map(Number);
   if (majeur < 8 || (majeur === 8 && mineur < 4)) {
-    manques.push(`PHP ${version} trop ancien : il faut PHP 8.4 ou plus récent (jouez en binôme sur le poste d'un voisin)`);
+    manques.push(`PHP ${version} trop ancien : il faut PHP 8.4 ou plus récent (${mac ? 'brew install php' : windows ? 'winget install PHP.PHP.8.4, puis rouvrez le terminal' : 'sudo apt install php8.5-cli, ou le dépôt php8.x de votre distribution'})`);
   }
   const modules = (lancer('php', ['-m']) || '').toLowerCase().split('\n').map((ligne) => ligne.trim());
   const paquets = { dom: 'xml', xml: 'xml', xmlwriter: 'xml', libxml: 'xml', tokenizer: 'common', iconv: 'common', json: 'common' };
   for (const [extension, paquet] of Object.entries(paquets)) {
     if (!modules.includes(extension)) {
-      manques.push(`Extension PHP ${extension} absente : ${mac ? 'brew reinstall php' : `sudo apt install php${version}-${paquet}`}`);
+      manques.push(`Extension PHP ${extension} absente : ${mac ? 'brew reinstall php' : windows ? 'ce PHP est incomplet : winget install PHP.PHP.8.4' : `sudo apt install php${version}-${paquet}`}`);
     }
   }
   if (!modules.includes('pcov') && !modules.includes('xdebug')) {
     piloteAbsent = true;
-    manques.push(`Pilote de couverture absent (exercice 2) : ${mac ? 'pecl install pcov' : `sudo apt install php${version}-pcov`}`);
+    manques.push(`Pilote de couverture absent (exercice 2) : ${mac ? 'pecl install pcov' : windows ? 'powershell -ExecutionPolicy Bypass -File ..\\outils\\installer-pcov.ps1' : `sudo apt install php${version}-pcov`}`);
   }
 }
 
@@ -67,7 +68,7 @@ if (!fs.existsSync(playwright)) {
 
 // 4. Git et Claude Code.
 if (lancer('git', ['--version']) === null) {
-  manques.push(mac ? 'Git introuvable : xcode-select --install' : 'Git introuvable : sudo apt install git');
+  manques.push(mac ? 'Git introuvable : xcode-select --install' : windows ? 'Git introuvable : winget install Git.Git, puis rouvrez le terminal' : 'Git introuvable : sudo apt install git');
 }
 if (lancer('claude', ['--version']) === null) {
   manques.push('Claude Code introuvable dans ce terminal : installez-le, puis rouvrez le terminal');
