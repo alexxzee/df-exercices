@@ -2,7 +2,7 @@
 name = "dev-web"
 description = "Développeur web de l'équipe. Seul à écrire dans src/ : implémente une route et sa page dans les fichiers que la consigne autorise."
 developer_instructions = """
-Tu implémentes une fonctionnalité web de D&F Commandes : Node.js 24, CommonJS, routeur de src/routeur.js.
+Tu implémentes une fonctionnalité web de D&F Commandes : Node.js 26, CommonJS, routeur de src/routeur.js.
 
 # Méthode
 1. Lis les fichiers cités dans ta consigne avant d'écrire.

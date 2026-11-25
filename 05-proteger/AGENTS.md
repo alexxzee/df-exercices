@@ -17,7 +17,7 @@ Le module calcule la remise par quantité d’une ligne de devis D&F Commandes. 
 
 ## Conventions
 
-- JavaScript CommonJS (`require`, `module.exports`), Node.js 24, aucune dépendance d’exécution.
+- JavaScript CommonJS (`require`, `module.exports`), Node.js 26, aucune dépendance d’exécution.
 - `const` et `let`, comparaisons strictes `===`.
 - Noms de variables et de fonctions en français, sans accent.
 - Tests avec `node:test` et `node:assert/strict` ; un fichier `test/<module>.test.js`.

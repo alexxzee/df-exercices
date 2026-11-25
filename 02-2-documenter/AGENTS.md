@@ -10,7 +10,7 @@ Le module tourne en production. Le calcul vient d’être corrigé selon `docs/r
 
 ## Conventions
 
-- JavaScript CommonJS, Node.js 24, aucune dépendance.
+- JavaScript CommonJS, Node.js 26, aucune dépendance.
 - Noms de variables et de fonctions en français, sans accent.
 - Tests `node:test` et `node:assert/strict`, dans `test/`.
 - Les montants sont des nombres en euros, arrondis au centime.
