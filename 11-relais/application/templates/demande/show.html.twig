@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande {{ demande.id }}{% endblock %}
+
+{% block body %}
+    {% set statuts = {ouverte: 'ouverte', en_cours: 'en cours', en_revue: 'en revue', terminee: 'terminée', abandonnee: 'abandonnée'} %}
+    {% set libelles = {
+        demarrer: 'Démarrer',
+        envoyer_en_revue: 'Envoyer en revue',
+        terminer: 'Terminer',
+        renvoyer: 'Renvoyer au technicien',
+    } %}
+    {% set messages = {
+        sans_technicien: 'Assignez la demande avant de la démarrer.',
+        relecteur_identique: 'Le relecteur doit être une autre personne.',
+    } %}
+
+    <h1>Demande {{ demande.id }}</h1>
+
+    <form method="get" action="{{ path('demande_voir', {id: demande.id}) }}">
+        <label for="acteur">Vous êtes</label>
+        <select id="acteur" name="acteur">
+            <option value="assigne" {{ acteur == 'assigne' ? 'selected' }}>technicien assigné</option>
+            <option value="relecteur" {{ acteur == 'relecteur' ? 'selected' }}>relecteur</option>
+            <option value="autre" {{ acteur == 'autre' ? 'selected' }}>autre membre</option>
+        </select>
+        <button type="submit">Afficher</button>
+    </form>
+
+    <dl>
+        <dt>Objet</dt>
+        <dd>{{ demande.objet }}</dd>
+        <dt>Statut</dt>
+        <dd data-testid="statut">{{ statuts[demande.statut] }}</dd>
+        <dt>Technicien</dt>
+        <dd>{{ demande.technicien ?? 'aucun' }}</dd>
+        <dt>Relecteur</dt>
+        <dd>{{ demande.relecteur ?? 'aucun' }}</dd>
+    </dl>
+
+    {% for blocage in blocages %}
+        <p class="message" role="status">{{ messages[blocage] }}</p>
+    {% endfor %}
+
+    {% if transitions is not empty %}
+        <div class="actions">
+            {% for transition in transitions %}
+                <form method="post" action="{{ path('demande_transition', {id: demande.id}) }}">
+                    <input type="hidden" name="acteur" value="{{ acteur }}">
+                    <button type="submit" name="transition" value="{{ transition }}">{{ libelles[transition] }}</button>
+                </form>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <p><a href="{{ path('demande_liste') }}">Retour aux demandes</a></p>
+{% endblock %}

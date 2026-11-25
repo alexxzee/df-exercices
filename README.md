@@ -43,5 +43,6 @@ Dans le terminal du sous-dossier (les commandes disponibles dépendent de l’ex
 | `05-proteger/` | fouiller une copie exposée, anonymiser un ticket avant de le confier, brancher un hook qui refuse à l’agent la lecture des secrets |
 | `06-integrer/` | envoyer le projet dans votre dépôt GitHub, faire écrire un pipeline CI qui bloque un secret, faire relire chaque pull request par votre agent de revue, puis décider ; ce sous-dossier porte son propre dépôt git et ses propres dépendances : `npm install` se lance aussi dans `06-integrer/` |
 | `08-equipe/` | découper un agent qui charge tout en agent, skill et documentation, puis confier une page à une équipe d’agents et la juger par une commande |
+| `11-relais/` | étude de cas bonus, démonstration conduite par le formateur : rien à lancer |
 | `intersession/` | travail du soir du premier jour : figer les frais de port avec le skill, les découper avec l’agent refacto, lister les écarts avec la règle dans `QUESTIONS.md` |
 | `outils/` | outillage partagé par les exercices : ne pas modifier |

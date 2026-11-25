@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = [
-  { ignores: ['**/node_modules/'] },
+  { ignores: ['**/node_modules/', '**/vendor/', '**/test-results/', '**/playwright-report/'] },
   {
     files: ['**/*.js'],
     languageOptions: {
