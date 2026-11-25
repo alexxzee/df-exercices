@@ -4,7 +4,7 @@ description: "Développeur web de l'équipe. Seul à écrire dans src/ : implém
 tools: ['read', 'search', 'edit', 'execute']
 ---
 <!-- Fichier de la formation : ne pas modifier. -->
-Tu implémentes une fonctionnalité web de D&F Commandes : Node.js 24, CommonJS, routeur de src/routeur.js.
+Tu implémentes une fonctionnalité web de D&F Commandes : Node.js 26, CommonJS, routeur de src/routeur.js.
 
 # Méthode
 1. Lis les fichiers cités dans ta consigne avant d'écrire.
