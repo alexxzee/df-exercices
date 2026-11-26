@@ -11,7 +11,7 @@ Le module tourne en production ; l’équipe doit faire évoluer les remises.
 
 ## Conventions
 
-- JavaScript CommonJS, Node.js 24, aucune dépendance.
+- JavaScript CommonJS, Node.js 26, aucune dépendance.
 - Noms de variables et de fonctions en français, sans accent.
 - Tests `node:test` et `node:assert/strict`, dans `test/`.
 - Les montants sont des nombres en euros, arrondis au centime.

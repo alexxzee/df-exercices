@@ -22,7 +22,7 @@ Le script `campagne.js` importe les contacts d’un salon, prépare une campagne
 
 ## Conventions
 
-- Node.js 24, bibliothèque standard seulement pour le script, aucune dépendance d’exécution.
+- Node.js 26, bibliothèque standard seulement pour le script, aucune dépendance d’exécution.
 - Noms de variables et de fonctions en français, sans accent.
 - Tests avec `node:test`, dans `test/`.
 - Corriger le script ne doit pas changer ce qu’il fait pour un contact légitime : les tests le vérifient.
